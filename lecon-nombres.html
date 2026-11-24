@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Leçon : nombres et couleurs en anglais – Le Défi du Temps</title>
+<link rel="stylesheet" href="css/style.css?v=20261124a">
+</head>
+<body>
+<div class="wrap">
+<div id="shell"></div>
+<main id="main">
+ <span class="sec">Partie 1 · Leçon</span>
+ <h1 style="color:var(--nombres)">🔢 English : numbers &amp; colours</h1>
+
+ <h2>1. Je découvre</h2>
+ <h3>Les nombres de 1 à 20</h3>
+ <p>Touche un nombre pour l'écouter 🔊 et répète-le à voix haute !</p>
+ <div class="agrid" id="ngrid"></div>
+ <h3 style="margin-top:20px">Les couleurs</h3>
+ <div class="agrid" id="cgrid"></div>
+
+ <h2>2. Mes astuces</h2>
+ <div class="tip"><b class="t">🎯 Les « teen » :</b> de 13 à 19, les nombres finissent par <b>-teen</b> : thir<b>teen</b>, four<b>teen</b>, fif<b>teen</b>, six<b>teen</b>, seven<b>teen</b>, eigh<b>teen</b>, nine<b>teen</b>. Attention à thir<b>teen</b> (13) et fif<b>teen</b> (15) : ils ne ressemblent pas à three et five.</div>
+ <div class="tip"><b class="t">✍️ Les mots difficiles à écrire :</b> <span class="k">eight</span> (8) · <span class="k">twelve</span> (12) · <span class="k">twenty</span> (20) · <span class="k">four</span> (4).</div>
+ <div class="tip"><b class="t">🎨 Les faux amis :</b> <span class="k">pink</span> = rose (pas « rose ») · <span class="k">brown</span> = marron · <span class="k">purple</span> = violet · <span class="k">orange</span> s'écrit pareil qu'en français, mais se prononce autrement !</div>
+
+ <div class="card" style="margin-top:14px">
+  <h3>🎚️ Le compteur magique</h3>
+  <input type="range" id="rg" min="1" max="20" value="7" aria-label="Choisis un nombre de 1 à 20">
+  <div class="conv" id="nconv" style="color:var(--nombres)"></div>
+  <p style="text-align:center"><button class="btn" id="nsp">🔊 Écouter</button></p>
+ </div>
+ <div class="card" style="margin-top:14px">
+  <h3>🎨 Le mélangeur de couleurs</h3>
+  <p>Choisis deux couleurs pour les mélanger :</p>
+  <div class="row"><select id="c1" aria-label="Première couleur"></select> <b>+</b> <select id="c2" aria-label="Deuxième couleur"></select></div>
+  <div class="fb mid" id="mix" style="font-size:1.15rem;display:flex;align-items:center;gap:12px"></div>
+ </div>
+
+ <h2>3. Je m'entraîne <span class="hint">(sans note)</span></h2>
+ <p>Méthode <b>Regarde – Cache – Écris – Vérifie</b>. Les nombres d'abord :</p>
+ <div class="cc" data-lang="en-GB" data-words="one,two,three,four,five,six,seven,eight,nine,ten,eleven,twelve"></div>
+ <p style="margin-top:16px">Puis les couleurs :</p>
+ <div class="cc" data-lang="en-GB" data-words="red,blue,green,yellow,orange,pink,purple,black,white,brown"></div>
+
+ <div class="retiens"><h3>✅ Je retiens</h3><ul>
+  <li><b>1 one · 2 two · 3 three · 4 four · 5 five · 6 six · 7 seven · 8 eight · 9 nine · 10 ten</b></li>
+  <li><b>11 eleven · 12 twelve</b>, puis de 13 à 19 : <b>-teen</b> · <b>20 twenty</b>.</li>
+  <li><b>red</b> rouge · <b>blue</b> bleu · <b>green</b> vert · <b>yellow</b> jaune · <b>orange</b> orange</li>
+  <li><b>pink</b> rose · <b>purple</b> violet · <b>black</b> noir · <b>white</b> blanc · <b>brown</b> marron</li></ul></div>
+
+ <h2>4. Je vérifie que j'ai compris <span class="hint">(touche la question)</span></h2>
+ <div class="qa"><button aria-expanded="false">Comment dit-on 9 en anglais ?</button><div class="ans" hidden>Nine.</div></div>
+ <div class="qa"><button aria-expanded="false">Que veut dire « yellow » ?</button><div class="ans" hidden>Jaune.</div></div>
+ <div class="qa"><button aria-expanded="false">Comment dit-on « rose » (la couleur) en anglais ?</button><div class="ans" hidden>Pink.</div></div>
+
+ <div class="card" style="margin-top:22px;text-align:center"><h3>Tu te sens prêt ?</h3><a class="btn big" href="evaluations.html#nombres">📝 Passer l'évaluation des nombres et couleurs</a></div>
+ <p class="row" style="margin-top:14px"><a class="btn alt" href="lecon-phrases.html">← Les phrases</a><a class="btn blue" href="evaluations.html#final">🏆 Les contrôles finaux</a></p>
+</main>
+<footer>Le Défi du Temps · soutien scolaire CE2</footer>
+</div>
+<script src="js/common.js?v=20261124a"></script>
+<script>
+shell("lecons","Hello ! On compte et on dit les couleurs en anglais !");
+$("#ngrid").innerHTML=NUM.map(n=>`<button class="ncard" data-speak="${n[1]}" data-lang="en-GB"><span class="d" style="font-size:2rem;font-weight:800;color:var(--nombres)">${n[0]}</span><b>${n[1]}</b><span>${n[2]}</span></button>`).join("");
+$("#cgrid").innerHTML=COL.map(c=>`<button class="ncard" data-speak="${c[0]}" data-lang="en-GB"><div class="csw" style="background:${c[2]}"></div><b>${c[0]}</b><span>${c[1]}</span></button>`).join("");
+function nc(){const n=NUM[+$("#rg").value-1];$("#nconv").textContent=n[0]+" = "+n[1]}
+$("#rg").oninput=nc;nc();$("#nsp").onclick=()=>speak(NUM[+$("#rg").value-1][1],"en-GB");
+$("#c1").innerHTML=$("#c2").innerHTML=COL.map((c,i)=>`<option value="${i}">${c[0]}</option>`).join("");
+$("#c1").value=0;$("#c2").value=3;
+const MIX={"red+yellow":["orange","#F57C00"],"blue+yellow":["green","#2E7D32"],"blue+red":["purple","#7B1FA2"],"red+white":["pink","#EC407A"]};
+function mix(){const a=COL[+$("#c1").value][0],b=COL[+$("#c2").value][0];const m=MIX[a+"+"+b]||MIX[b+"+"+a];
+ $("#mix").innerHTML=m?`<span class="csw" style="background:${m[1]};margin:0"></span><span>${a} + ${b} = <b>${m[0]}</b> !</span>`:(a===b?`<span>Choisis deux couleurs différentes !</span>`:`<span>${a} + ${b} : essaie red + yellow, blue + yellow, blue + red ou red + white !</span>`)}
+$("#c1").onchange=$("#c2").onchange=mix;mix();
+</script>
+</body>
+</html>

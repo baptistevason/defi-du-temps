@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Les évaluations – Le Défi du Temps</title>
+<link rel="stylesheet" href="css/style.css?v=20261124a">
+</head>
+<body>
+<div class="wrap">
+<div id="shell"></div>
+<main id="main">
+ <span class="sec">Partie 2</span>
+ <h1>📝 Les évaluations</h1>
+ <p>Ici, on teste ce qu'on a retenu. Tu réponds à toutes les questions, puis tu découvres ton <b>score</b> et le <b>corrigé</b> avec les explications. Tu peux refaire chaque évaluation autant de fois que tu veux : c'est le meilleur score qui compte !</p>
+ <div class="tip"><b class="t">Pas encore sûr de toi ?</b> Retourne d'abord à la <a href="lecons.html"><b>leçon</b></a>. Pas de honte, tout le monde révise.</div>
+ <div id="list"></div>
+</main>
+<footer>Le Défi du Temps · soutien scolaire CE2</footer>
+</div>
+<script src="js/common.js?v=20261124a"></script>
+<script src="js/evals-data.js?v=20261124a"></script>
+<script>
+shell("evals","Prêt pour l'évaluation ? Choisis un thème !");
+const keys=["jours","mois","annee","romains","alphabet","phrases","nombres","tables","final"].filter(k=>EVALS[k]);
+$("#list").innerHTML=keys.map(k=>{const o=EVALS[k];
+ return `<section id="${k}" class="card" style="margin:16px 0;border-top:12px solid ${o.col}"><h2 style="margin-top:0">${o.e} ${o.title}</h2>
+ ${o.tests.map(x=>{const b=badge(S.scores[x.id]);return `<div class="row" style="justify-content:space-between;padding:8px 0;border-top:2px solid var(--line)"><div><b>${x.title}</b><br><span class="hint">${x.desc}</span><br><span class="pill ${b.c}">${b.t}</span></div><a class="btn big" href="evaluation.html?t=${k}&k=${x.id}">${S.scores[x.id]?"Refaire":"Commencer"}</a></div>`}).join("")}
+ ${k!=="final"?`<p style="margin:10px 0 0"><a class="btn blue" href="${o.lesson}">📖 Revoir la leçon</a></p>`:`<p class="hint">Fais-le quand tu as réussi les autres évaluations !</p>`}</section>`}).join("");
+</script>
+</body>
+</html>

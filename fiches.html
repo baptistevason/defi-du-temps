@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Fiches d'écriture à imprimer – Le Défi du Temps</title>
+<link rel="stylesheet" href="css/style.css?v=20261124a">
+</head>
+<body>
+<div class="wrap">
+<div id="shell"></div>
+<main id="main">
+ <h1>✏️ Fiches d'écriture</h1>
+ <div class="tip noprint"><b class="t">Méthode « Regarde – Cache – Écris – Vérifie » :</b><br>1) Je regarde le mot gris. 2) Je le recouvre avec ma main. 3) Je l'écris sur la ligne vide. 4) Je vérifie lettre par lettre avec un crayon de couleur.</div>
+ <p class="noprint"><button class="btn big" id="pr">🖨️ Imprimer cette page</button> <span class="hint">(ou recopier les mots sur un cahier à lignes)</span></p>
+ <h2>Les jours</h2><div id="fj"></div>
+ <h2>Les mois</h2><div id="fm"></div>
+ <h2>Les chiffres romains</h2><div id="fr"></div>
+ <h2 id="tables">Les tables de multiplication</h2>
+ <p class="noprint hint">Le tableau à imprimer, puis une page à compléter de mémoire.</p>
+ <div style="overflow-x:auto"><table class="pyth" id="ftab"></table></div>
+ <h3>À compléter de mémoire</h3><div id="ftr" class="tabl" style="grid-template-columns:repeat(auto-fill,minmax(170px,1fr))"></div>
+</main>
+<footer>Le Défi du Temps · soutien scolaire CE2</footer>
+</div>
+<script src="js/common.js?v=20261124a"></script>
+<script>
+shell("fiches","Les fiches, c'est pour écrire avec ton crayon !");
+const mk=a=>a.map(w=>`<div class="sheet"><div class="line">${w} ${w} ${w}</div><div class="line empty">.</div></div>`).join("");
+$("#fj").innerHTML=mk(JOURS);$("#fm").innerHTML=mk(MOIS);
+$("#fr").innerHTML=mk(Array.from({length:20},(_,i)=>`${i+1} = ${toRoman(i+1)}`));
+let th='<tr><th>×</th>'+Array.from({length:10},(_,i)=>'<th>'+(i+1)+'</th>').join("")+'</tr>';
+for(let r=1;r<=10;r++)th+='<tr><th>'+r+'</th>'+Array.from({length:10},(_,c)=>'<td style="cursor:default">'+(r*(c+1))+'</td>').join("")+'</tr>';
+$("#ftab").innerHTML=th;
+$("#ftr").innerHTML=[3,4,6,7,8,9].map(n=>'<div class="card" style="box-shadow:none;padding:10px"><b>Table de '+n+'</b>'+Array.from({length:10},(_,i)=>'<div style="border-bottom:2px solid var(--line);padding:4px 0">'+n+' × '+(i+1)+' = ......</div>').join("")+'</div>').join("");
+$("#pr").onclick=()=>{try{window.print()}catch(e){}};
+</script>
+</body>
+</html>

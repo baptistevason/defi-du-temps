@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Leçon : l'alphabet en anglais – Le Défi du Temps</title>
+<link rel="stylesheet" href="css/style.css?v=20261124a">
+</head>
+<body>
+<div class="wrap">
+<div id="shell"></div>
+<main id="main">
+ <span class="sec">Partie 1 · Leçon</span>
+ <h1 style="color:var(--alphabet)">🔤 English : the alphabet</h1>
+
+ <h2>1. Je découvre</h2>
+ <p>L'alphabet anglais a <b>26 lettres</b>, comme en français. Ce sont les mêmes, mais elles <b>se prononcent autrement</b> ! Touche une lettre pour l'écouter 🔊, ou le mot pour l'entendre aussi.</p>
+ <div class="agrid" id="agrid"></div>
+ <p class="hint">Sous chaque lettre, la prononciation est écrite « à la française ». Si tu n'entends rien, vérifie le son de ton appareil.</p>
+
+ <h2>2. Mes astuces</h2>
+ <div class="tip"><b class="t">🎯 Les lettres qui riment :</b> on les retient par familles !</div>
+ <div class="grid" id="fam"></div>
+ <div class="tip"><b class="t">⚠️ Les pièges pour un Français :</b> <span class="k">E</span> se dit « i » · <span class="k">I</span> se dit « aï » · <span class="k">G</span> se dit « dji » · <span class="k">J</span> se dit « djéï » · <span class="k">H</span> se dit « éïtch » · <span class="k">W</span> se dit « dabeul-iou » · <span class="k">Y</span> se dit « ouaï ».</div>
+ <div class="tip"><b class="t">🇬🇧 / 🇺🇸 Petite différence :</b> pour la lettre Z, les Anglais disent « zèd », les Américains disent « zi ». Ici on utilise l'anglais de Grande-Bretagne.</div>
+ <div class="tip"><b class="t">🔤 Voyelles et consonnes :</b> les <b>5 voyelles</b> sont A, E, I, O, U. Les 21 autres lettres sont des consonnes.</div>
+
+ <h2>3. Je m'entraîne <span class="hint">(sans note)</span></h2>
+ <div class="card">
+  <h3>✏️ Épelle ton prénom en anglais</h3>
+  <p><label for="nm">Écris ton prénom :</label></p>
+  <div class="row"><input id="nm" class="txt" style="max-width:300px;font-size:1.2rem" maxlength="15" autocomplete="off" placeholder="Ton prénom"><button class="btn big" id="spell">🔊 Épeler</button></div>
+  <div class="letters-out" id="lout"></div>
+ </div>
+ <h3 style="margin-top:20px">Écrire des mots anglais</h3>
+ <p>Méthode <b>Regarde – Cache – Écris – Vérifie</b>, avec des mots que tu connais déjà peut-être !</p>
+ <div class="cc" data-lang="en-GB" data-words="cat,dog,fish,apple,egg,sun,moon,tree"></div>
+
+ <div class="retiens"><h3>✅ Je retiens</h3><ul>
+  <li>L'alphabet anglais a <b>26 lettres</b> (de A à Z).</li>
+  <li>Les lettres sont les mêmes qu'en français, mais <b>on les dit autrement</b> : E = « i », I = « aï », J = « djéï ».</li>
+  <li>Les familles : <b>A H J K</b> (éï) · <b>B C D E G P T V</b> (i) · <b>Q U W</b> (iou).</li>
+  <li>Je sais épeler mon prénom en anglais !</li></ul></div>
+
+ <h2>4. Je vérifie que j'ai compris <span class="hint">(touche la question)</span></h2>
+ <div class="qa"><button aria-expanded="false">Comment dit-on la lettre E en anglais ?</button><div class="ans" hidden>« i » (comme dans « ee »).</div></div>
+ <div class="qa"><button aria-expanded="false">Combien y a-t-il de lettres dans l'alphabet anglais ?</button><div class="ans" hidden>26 lettres.</div></div>
+ <div class="qa"><button aria-expanded="false">Quelle lettre se dit « aï » ?</button><div class="ans" hidden>La lettre I.</div></div>
+
+ <div class="card" style="margin-top:22px;text-align:center"><h3>Tu te sens prêt ?</h3><a class="btn big" href="evaluations.html#alphabet">📝 Passer l'évaluation de l'alphabet</a></div>
+ <p class="row" style="margin-top:14px"><a class="btn alt" href="lecon-romains.html">← Les chiffres romains</a><a class="btn blue" href="lecon-phrases.html">Leçon suivante : basic phrases →</a></p>
+</main>
+<footer>Le Défi du Temps · soutien scolaire CE2</footer>
+</div>
+<script src="js/common.js?v=20261124a"></script>
+<script>
+shell("lecons","Hello ! Touche les lettres pour entendre l'alphabet anglais !");
+$("#agrid").innerHTML=ALPHA.map(a=>`<div class="acard"><button class="L" style="all:unset;cursor:pointer;display:block;width:100%" data-speak="${a[2]}" data-lang="en-GB" aria-label="Lettre ${a[0]}"><span class="L">${a[0]}<small>${a[0].toLowerCase()}</small></span><span>« ${a[1]} »</span></button>
+ <button style="all:unset;cursor:pointer;display:block;width:100%;margin-top:4px" data-speak="${a[3]}" data-lang="en-GB" aria-label="Mot ${a[3]}"><span class="em">${a[4]}</span><b>${a[3]}</b><span>${a[5]}</span></button></div>`).join("");
+const fam=[["éï","A · H · J · K"],["i","B · C · D · E · G · P · T · V"],["è…","F · L · M · N · S · X · Z"],["aï","I · Y"],["iou","Q · U · W"],["à part","O · R"]];
+$("#fam").innerHTML=fam.map(f=>`<div class="card"><b style="color:var(--alphabet)">« ${f[0]} »</b><div style="font-size:1.5rem;font-weight:800">${f[1]}</div></div>`).join("");
+function spellName(){const v=strip($("#nm").value).toUpperCase().replace(/[^A-Z]/g,"");const L=v.split("").filter(Boolean);
+ $("#lout").innerHTML=L.map(c=>{const a=ALPHA.find(x=>x[0]===c);return `<span>${c}<small>${a[1]}</small></span>`}).join("");
+ if(L.length)speakSeq(L.map(c=>ALPHA.find(x=>x[0]===c)[2]),"en-GB")}
+$("#spell").onclick=spellName;$("#nm").addEventListener("keydown",e=>{if(e.key==="Enter")spellName()});
+</script>
+</body>
+</html>

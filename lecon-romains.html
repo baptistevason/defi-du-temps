@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Leçon : les chiffres romains – Le Défi du Temps</title>
+<link rel="stylesheet" href="css/style.css?v=20261124a">
+</head>
+<body>
+<div class="wrap">
+<div id="shell"></div>
+<main id="main">
+ <span class="sec">Partie 1 · Leçon</span>
+ <h1 style="color:var(--romains)">🏛️ Les chiffres romains</h1>
+
+ <h2>1. Je découvre</h2>
+ <p>Les Romains écrivaient les nombres avec des <b>lettres</b>. Il n'y en a que 3 à connaître pour commencer :</p>
+ <div class="chips"><button class="chip" style="background:var(--romains)" data-speak="un">I = 1</button><button class="chip" style="background:var(--romains)" data-speak="cinq">V = 5</button><button class="chip" style="background:var(--romains)" data-speak="dix">X = 10</button></div>
+ <div class="tip"><b class="t">🖐️ L'image à retenir :</b> I = un doigt. V = une main ouverte (le pouce et l'index forment un V). X = deux V collés, comme deux mains croisées : 5 + 5 = 10 !</div>
+
+ <h2>2. Mes règles</h2>
+ <div class="tip"><b class="t">➕ Règle 1 – On ajoute :</b> une petite lettre <u>après</u> une grande, on <b>ajoute</b>. VI = 5 + 1 = 6 · XII = 10 + 2 = 12.</div>
+ <div class="tip"><b class="t">➖ Règle 2 – On enlève :</b> un I <u>avant</u> V ou X, on <b>enlève</b>. IV = 5 − 1 = 4 · IX = 10 − 1 = 9.</div>
+ <div class="tip"><b class="t">🚫 Règle 3 :</b> pas plus de <b>3</b> lettres identiques à la suite. III oui, <s>IIII</s> non : on écrit IV.</div>
+
+ <div class="card" style="margin-top:14px">
+  <h3>🎚️ Le convertisseur magique</h3>
+  <p><label for="rg">Glisse pour choisir un nombre de 1 à 20 :</label></p>
+  <input type="range" id="rg" min="1" max="20" value="14">
+  <div class="conv" id="conv"></div>
+  <div class="fb mid" id="why" style="text-align:center"></div>
+ </div>
+
+ <h3 style="margin-top:20px">Le tableau de 1 à 20 <span class="hint">(touche pour écouter)</span></h3>
+ <div class="romtab" id="tab"></div>
+
+ <div class="card" style="margin-top:14px">
+  <h3>🕓 Sur une horloge romaine</h3>
+  <p><label for="hr">Choisis une heure :</label></p>
+  <input type="range" id="hr" min="1" max="12" value="4">
+  <svg id="clock" viewBox="0 0 220 220" style="width:min(320px,100%);display:block;margin:6px auto" role="img" aria-label="Horloge en chiffres romains"></svg>
+  <div class="fb mid" id="hrtxt" style="text-align:center"></div>
+ </div>
+
+ <div class="tip"><b class="t">🌍 On en voit partout :</b> sur les horloges, pour les chapitres des livres, pour les rois (Louis XIV) et pour les siècles : nous sommes au <b>XXI<sup>e</sup></b> siècle (le 21<sup>e</sup>) !</div>
+
+ <h2>3. Je m'entraîne <span class="hint">(sans note)</span></h2>
+ <div class="card">
+  <h3>🔧 Construis ton nombre</h3>
+  <p>Touche I, V, X pour écrire un nombre romain, je te dis combien ça vaut !</p>
+  <div class="slots" id="bs" style="font-size:2rem"></div>
+  <div class="tiles"><button class="tile" data-l="I" style="min-width:80px;font-size:1.8rem">I</button><button class="tile" data-l="V" style="min-width:80px;font-size:1.8rem">V</button><button class="tile" data-l="X" style="min-width:80px;font-size:1.8rem">X</button><button class="btn alt" id="bdel">⌫ Effacer</button><button class="btn alt" id="bclr">↺ Tout effacer</button></div>
+  <div class="fb mid" id="bres"></div>
+ </div>
+
+ <div class="retiens"><h3>✅ Je retiens</h3><ul>
+  <li><b>I = 1 · V = 5 · X = 10</b></li>
+  <li>Petite lettre <b>après</b> : on ajoute (VI = 6). Petite lettre <b>avant</b> : on enlève (IV = 4).</li>
+  <li>Jamais plus de 3 lettres pareilles : 4 s'écrit <b>IV</b>, 9 s'écrit <b>IX</b>.</li>
+  <li>Pour 11 à 19 : <b>X</b> puis le reste. 14 = X + IV = <b>XIV</b>. Et 20 = <b>XX</b>.</li></ul></div>
+
+ <h2>4. Je vérifie que j'ai compris <span class="hint">(touche la question)</span></h2>
+ <div class="qa"><button aria-expanded="false">Que vaut VIII ?</button><div class="ans" hidden>8 (V + III = 5 + 3).</div></div>
+ <div class="qa"><button aria-expanded="false">Comment écrit-on 9 ?</button><div class="ans" hidden>IX (10 − 1).</div></div>
+ <div class="qa"><button aria-expanded="false">Comment écrit-on 15 ?</button><div class="ans" hidden>XV (10 + 5).</div></div>
+
+ <div class="card" style="margin-top:22px;text-align:center"><h3>Tu te sens prêt ?</h3><a class="btn big" href="evaluations.html#romains">📝 Passer l'évaluation des chiffres romains</a></div>
+ <p class="row" style="margin-top:14px"><a class="btn alt" href="lecon-annee.html">← Les jours de l'année</a><a class="btn blue" href="lecon-alphabet.html">Leçon suivante : English, the alphabet →</a></p>
+</main>
+<footer>Le Défi du Temps · soutien scolaire CE2</footer>
+</div>
+<script src="js/common.js?v=20261124a"></script>
+<script>
+shell("lecons","Les Romains avaient 3 lettres magiques : I, V et X !");
+function parts(n){const p=[];if(n>=10)p.push(["X",10]);const r=n%10;if(r>0)p.push([toRoman(r),r]);return p}
+function conv(){const n=+$("#rg").value;$("#conv").textContent=n+" = "+toRoman(n);
+ const p=parts(n);$("#why").textContent=p.length>1?p.map(x=>`${x[0]} (${x[1]})`).join(" + ")+" → "+toRoman(n):(n===10?"X = deux V collés (5 + 5)":`${toRoman(n)} = ${n}`)}
+$("#rg").oninput=conv;conv();
+$("#tab").innerHTML=Array.from({length:20},(_,i)=>`<div><button style="all:unset;cursor:pointer;display:block;width:100%" data-speak="${i+1}"><span>${toRoman(i+1)}</span>${i+1}</button></div>`).join("");
+const H=["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"];
+function clock(){const h=+$("#hr").value;let s='<circle cx="110" cy="110" r="104" fill="#fff" stroke="#1F2937" stroke-width="5"/>';
+ for(let i=0;i<12;i++){const a=(i*30-90)*Math.PI/180;s+=`<text x="${110+82*Math.cos(a)}" y="${110+82*Math.sin(a)+7}" text-anchor="middle" font-size="${H[i].length>2?15:19}" font-weight="800" fill="#7B3FC4">${H[i]}</text>`}
+ const a=((h%12)*30-90)*Math.PI/180;
+ s+=`<line x1="110" y1="110" x2="${110+52*Math.cos(a)}" y2="${110+52*Math.sin(a)}" stroke="#1F2937" stroke-width="8" stroke-linecap="round"/><line x1="110" y1="110" x2="110" y2="36" stroke="#C0392B" stroke-width="5" stroke-linecap="round"/><circle cx="110" cy="110" r="7" fill="#1F2937"/>`;
+ $("#clock").innerHTML=s;$("#hrtxt").textContent=`Il est ${toRoman(h)} heures, c'est-à-dire ${h} h.`}
+$("#hr").oninput=clock;clock();
+let cur="";
+function bd(){$("#bs").innerHTML=cur?cur.split("").map(c=>`<span class="slot">${c}</span>`).join(""):'<span class="hint">Touche I, V ou X…</span>';
+ const ok=/^(X{0,3})(IX|IV|V?I{0,3})$/.test(cur);
+ const val=s=>{const m={I:1,V:5,X:10};let t=0;for(let i=0;i<s.length;i++){const v=m[s[i]],n=m[s[i+1]]||0;t+=v<n?-v:v}return t};
+ $("#bres").textContent=!cur?"…":ok?`${cur} = ${val(cur)} ✅`:`${cur} : ce n'est pas un nombre romain bien écrit (pense aux règles !)`}
+$$("[data-l]").forEach(b=>b.onclick=()=>{if(cur.length<8){cur+=b.dataset.l;bd()}});
+$("#bdel").onclick=()=>{cur=cur.slice(0,-1);bd()};$("#bclr").onclick=()=>{cur="";bd()};bd();
+</script>
+</body>
+</html>

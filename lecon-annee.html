@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Leçon : les jours de l'année – Le Défi du Temps</title>
+<link rel="stylesheet" href="css/style.css?v=20261124a">
+</head>
+<body>
+<div class="wrap">
+<div id="shell"></div>
+<main id="main">
+ <span class="sec">Partie 1 · Leçon</span>
+ <h1 style="color:var(--annee)">🎂 Les jours de l'année</h1>
+
+ <h2>1. Je découvre</h2>
+ <div class="grid">
+  <div class="card" style="text-align:center"><div class="big-total">12</div>mois</div>
+  <div class="card" style="text-align:center"><div class="big-total">52</div>semaines</div>
+  <div class="card" style="text-align:center"><div class="big-total">365</div>jours</div>
+ </div>
+ <p>Une année normale a <b>365 jours</b>. Mais certains mois sont plus longs que d'autres…</p>
+ <div class="tip"><b class="t">🎵 La comptine des mois :</b><br>« Trente jours ont novembre, avril, juin et septembre.<br>De vingt-huit il n'en est qu'un, tous les autres en ont trente et un. »</div>
+ <table><tr><th>Mois de 31 jours (7)</th><th>Mois de 30 jours (4)</th><th>Février</th></tr>
+ <tr><td>janvier, mars, mai, juillet, août, octobre, décembre</td><td>avril, juin, septembre, novembre</td><td>28 jours<br>(29 si bissextile)</td></tr></table>
+
+ <h2>2. Mes astuces</h2>
+ <div class="card">
+  <h3>✊ L'astuce du poing</h3>
+  <p>Ferme ton poing : chaque <b>bosse</b> (articulation) = mois de <b>31 jours</b>. Chaque <b>creux</b> = mois de <b>30 jours</b> (sauf février). Après juillet, on recommence sur la même bosse avec août !</p>
+  <div class="knuckles" id="kn"></div>
+  <div class="fb mid" id="knmsg">Touche un mois pour voir son nombre de jours.</div>
+ </div>
+ <div class="card" style="margin-top:14px">
+  <h3>➕ Compte les jours de l'année</h3>
+  <p>Touche les mois <b>dans l'ordre</b> et regarde le total grandir !</p>
+  <div class="mgrid" id="adder"></div>
+  <p>Total : <span class="big-total" id="tot">0</span> jours <button class="btn alt" id="rst" style="min-height:44px">↺ Recommencer</button></p>
+ </div>
+ <div class="card" style="margin-top:14px">
+  <h3>🌟 L'année bissextile</h3>
+  <p>Tous les 4 ans, février a <b>29 jours</b> et l'année a <b>366 jours</b>. C'est une année <b>bissextile</b>.</p>
+  <div class="timeline" id="leap"></div>
+  <p class="hint">La prochaine année bissextile : 2028 !</p>
+ </div>
+
+ <h2>3. Je m'entraîne <span class="hint">(sans note)</span></h2>
+ <div class="card">
+  <h3>🔎 Combien de jours dans ce mois ?</h3>
+  <p><label for="msel">Choisis un mois :</label> <select id="msel"></select></p>
+  <div class="fb good" id="mres"></div>
+ </div>
+
+ <div class="retiens"><h3>✅ Je retiens</h3><ul>
+  <li>1 année = <b>12 mois</b> = <b>52 semaines</b> = <b>365 jours</b>.</li>
+  <li><b>7 mois</b> de 31 jours : janvier, mars, mai, juillet, août, octobre, décembre.</li>
+  <li><b>4 mois</b> de 30 jours : avril, juin, septembre, novembre.</li>
+  <li><b>Février</b> : 28 jours (29 les années bissextiles, donc 366 jours dans l'année).</li></ul></div>
+
+ <h2>4. Je vérifie que j'ai compris <span class="hint">(touche la question)</span></h2>
+ <div class="qa"><button aria-expanded="false">Combien de jours a le mois de juin ?</button><div class="ans" hidden>30 jours (c'est dans la comptine !).</div></div>
+ <div class="qa"><button aria-expanded="false">Quel est le mois le plus court ?</button><div class="ans" hidden>Février.</div></div>
+ <div class="qa"><button aria-expanded="false">Combien de jours dans 2 semaines ?</button><div class="ans" hidden>14 jours (7 + 7).</div></div>
+
+ <div class="card" style="margin-top:22px;text-align:center"><h3>Tu te sens prêt ?</h3><a class="btn big" href="evaluations.html#annee">📝 Passer l'évaluation de l'année</a></div>
+ <p class="row" style="margin-top:14px"><a class="btn alt" href="lecon-mois.html">← Les mois</a><a class="btn blue" href="lecon-romains.html">Leçon suivante : les chiffres romains →</a></p>
+</main>
+<footer>Le Défi du Temps · soutien scolaire CE2</footer>
+</div>
+<script src="js/common.js?v=20261124a"></script>
+<script>
+shell("lecons","Découvre combien de jours il y a dans l'année !");
+const bump=i=>[0,2,4,6,7,9,11].includes(i);
+$("#kn").innerHTML=MOIS.map((m,i)=>`<button class="kn ${bump(i)?"bump":"valley"}" data-i="${i}">${m.slice(0,4)}${m.length>4?".":""}<small>${bump(i)?"bosse":"creux"}</small></button>`).join("");
+$$("#kn .kn").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;$("#knmsg").textContent=`${MOIS[i]} : ${NBJ[i]} jours${i===1?" (29 si année bissextile)":""} — ${bump(i)?"bosse = 31":"creux = 30 (février : 28)"}`;speak(MOIS[i])});
+let tot=0,nx=0;
+$("#adder").innerHTML=MOIS.map((m,i)=>`<button class="mcard" data-i="${i}"><b>${m}</b><small>${NBJ[i]} j</small></button>`).join("");
+$$("#adder .mcard").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(i!==nx){say("Pas celui-là ! Le prochain mois, c'est "+MOIS[nx]+".");return}tot+=NBJ[i];nx++;b.style.background="#C9F2D3";$("#tot").textContent=tot;if(nx===12){say("365 jours ! Tu as compté toute l'année !");confetti()}else say("Total : "+tot+" jours. Continue !")});
+$("#rst").onclick=()=>{tot=0;nx=0;$("#tot").textContent=0;$$("#adder .mcard").forEach(b=>b.style.background="")};
+$("#leap").innerHTML=[2024,2025,2026,2027,2028].map(y=>`<div class="${y%4===0?"leap":""}">${y}<small>${y%4===0?"366 j ⭐":"365 j"}</small></div>`).join("");
+$("#msel").innerHTML=MOIS.map((m,i)=>`<option value="${i}">${m}</option>`).join("");
+function mres(){const i=+$("#msel").value;$("#mres").textContent=`${MOIS[i]} a ${NBJ[i]} jours${i===1?" (29 les années bissextiles)":""}.`}
+$("#msel").onchange=mres;mres();
+</script>
+</body>
+</html>

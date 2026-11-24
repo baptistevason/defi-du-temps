@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Leçon : les jours de la semaine – Le Défi du Temps</title>
+<link rel="stylesheet" href="css/style.css?v=20261124a">
+</head>
+<body>
+<div class="wrap">
+<div id="shell"></div>
+<main id="main">
+ <span class="sec">Partie 1 · Leçon</span>
+ <h1 style="color:var(--jours)">📅 Les jours de la semaine</h1>
+
+ <h2>1. Je découvre</h2>
+ <p>Une semaine, c'est <b>7 jours</b>. Touche un jour pour l'écouter 🔊</p>
+ <div class="chips" id="week"></div>
+ <p class="legend">🔵 jours d'école (5) · 🟠 week-end (2) → 5 + 2 = 7</p>
+
+ <h2>2. Mes astuces</h2>
+ <div class="tip"><b class="t">🎯 Le truc des « DI » :</b> les 6 premiers jours <u>finissent</u> par <b>di</b> : lun<b>di</b>, mar<b>di</b>, mercre<b>di</b>, jeu<b>di</b>, vendre<b>di</b>, same<b>di</b>… mais <b>di</b>manche, lui, <u>commence</u> par « di ». Le coquin !</div>
+ <div class="tip"><b class="t">✍️ Les mots difficiles :</b> <span class="k">mer·cre·di</span> (3 morceaux) · <span class="k">ven·dre·di</span> (« dre », pas « dr ») · <span class="k">sa·me·di</span> (un seul « m »).</div>
+ <div class="tip"><b class="t">📚 Les mots magiques :</b> <span class="k">hier</span> (avant) · <span class="k">aujourd'hui</span> · <span class="k">demain</span> (après). Le jour change à minuit !</div>
+
+ <div class="card" style="margin-top:14px">
+  <h3>🔎 Hier, aujourd'hui, demain</h3>
+  <p><label for="sel">Choisis un jour pour « aujourd'hui » :</label> <select id="sel"></select></p>
+  <div class="chips" id="hdd"></div>
+ </div>
+
+ <h2>3. Je m'entraîne à écrire <span class="hint">(sans note)</span></h2>
+ <p>On utilise la méthode <b>Regarde – Cache – Écris – Vérifie</b>. Tu peux recommencer autant que tu veux.</p>
+ <div class="cc" data-words="lundi,mardi,mercredi,jeudi,vendredi,samedi,dimanche"></div>
+
+ <div class="retiens"><h3>✅ Je retiens</h3><ul>
+  <li>La semaine a <b>7 jours</b> : lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche.</li>
+  <li>Le <b>1<sup>er</sup> jour</b> est lundi, le <b>dernier</b> est dimanche.</li>
+  <li>Les jours s'écrivent <b>sans majuscule</b> : « lundi », pas « Lundi » (sauf en début de phrase).</li>
+  <li>Les jours d'école : lundi, mardi, mercredi, jeudi, vendredi.</li></ul></div>
+
+ <h2>4. Je vérifie que j'ai compris <span class="hint">(touche la question)</span></h2>
+ <div class="qa"><button aria-expanded="false">Quel jour vient après jeudi ?</button><div class="ans" hidden>Vendredi !</div></div>
+ <div class="qa"><button aria-expanded="false">Combien y a-t-il de jours dans une semaine ?</button><div class="ans" hidden>7 jours.</div></div>
+ <div class="qa"><button aria-expanded="false">Quel jour commence par « di » ?</button><div class="ans" hidden>Dimanche.</div></div>
+
+ <div class="card" style="margin-top:22px;text-align:center"><h3>Tu te sens prêt ?</h3><a class="btn big" href="evaluations.html#jours">📝 Passer l'évaluation des jours</a></div>
+ <p class="row" style="margin-top:14px"><a class="btn alt" href="lecons.html">← Toutes les leçons</a><a class="btn blue" href="lecon-mois.html">Leçon suivante : les mois →</a></p>
+</main>
+<footer>Le Défi du Temps · soutien scolaire CE2</footer>
+</div>
+<script src="js/common.js?v=20261124a"></script>
+<script>
+shell("lecons","Touche les jours pour les écouter, puis entraîne-toi à les écrire !");
+$("#week").innerHTML=JOURS.map((j,i)=>`<button class="chip ${i>4?"we":""}" data-speak="${j}">🔊 ${j}<small>${i>4?"week-end":"jour d'école"} · n°${i+1}</small></button>`).join("");
+$("#sel").innerHTML=JOURS.map((j,i)=>`<option value="${i}">${j}</option>`).join("");
+function hdd(){const k=+$("#sel").value;$("#hdd").innerHTML=`<div class="chip" style="background:#5B6472">hier<small>${JOURS[(k+6)%7]}</small></div><div class="chip" style="background:var(--annee)">aujourd'hui<small>${JOURS[k]}</small></div><div class="chip" style="background:var(--romains)">demain<small>${JOURS[(k+1)%7]}</small></div>`}
+$("#sel").onchange=hdd;hdd();
+</script>
+</body>
+</html>

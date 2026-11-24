@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Leçon : les mois de l'année – Le Défi du Temps</title>
+<link rel="stylesheet" href="css/style.css?v=20261124a">
+</head>
+<body>
+<div class="wrap">
+<div id="shell"></div>
+<main id="main">
+ <span class="sec">Partie 1 · Leçon</span>
+ <h1 style="color:var(--mois)">🗓️ Les mois de l'année</h1>
+
+ <h2>1. Je découvre</h2>
+ <p>Une année, c'est <b>12 mois</b>. Touche un mois pour l'écouter 🔊</p>
+ <div class="mgrid" id="mgrid"></div>
+ <p class="legend">❄️ bleu : hiver · 🌱 vert : printemps · ☀️ jaune : été · 🍂 orange : automne (saisons « des météorologues »)</p>
+
+ <h2>2. Mes astuces</h2>
+ <div class="tip"><b class="t">🎯 Les mois en « bre » :</b> ce sont les 4 derniers mois de l'année : <span class="k">septembre</span> <span class="k">octobre</span> <span class="k">novembre</span> <span class="k">décembre</span>.</div>
+ <div class="tip"><b class="t">🎯 Les mois sans la lettre R :</b> <span class="k">mai</span> <span class="k">juin</span> <span class="k">juillet</span> <span class="k">août</span>. Ça fait presque l'été !</div>
+ <div class="tip"><b class="t">✍️ Attention aux accents :</b> <span class="k">février</span> (é) · <span class="k">août</span> (û, et il se dit « ou » !) · <span class="k">décembre</span> (é).</div>
+ <div class="tip"><b class="t">✍️ Pas de majuscule :</b> on écrit « en mars », « le 3 juin ». La majuscule, c'est seulement au début d'une phrase.</div>
+ <div class="tip"><b class="t">🤯 Rigolo :</b> « septembre » commence par « sept » mais c'est le 9<sup>e</sup> mois. Les anciens Romains ne comptaient pas comme nous !</div>
+
+ <h2>3. Je m'entraîne à écrire <span class="hint">(sans note)</span></h2>
+ <p>Commence par les mois les plus difficiles. Méthode <b>Regarde – Cache – Écris – Vérifie</b>.</p>
+ <div class="cc" data-words="février,août,décembre,septembre,octobre,novembre,juillet,janvier,mars,avril,mai,juin"></div>
+
+ <div class="retiens"><h3>✅ Je retiens</h3><ul>
+  <li>L'année a <b>12 mois</b> : janvier, février, mars, avril, mai, juin, juillet, août, septembre, octobre, novembre, décembre.</li>
+  <li>Le <b>1<sup>er</sup> mois</b> est janvier, le <b>12<sup>e</sup></b> est décembre.</li>
+  <li>Les mois s'écrivent <b>sans majuscule</b>.</li>
+  <li>Attention aux accents : <b>février, août, décembre</b>.</li></ul></div>
+
+ <h2>4. Je vérifie que j'ai compris <span class="hint">(touche la question)</span></h2>
+ <div class="qa"><button aria-expanded="false">Quel mois vient après mars ?</button><div class="ans" hidden>Avril !</div></div>
+ <div class="qa"><button aria-expanded="false">Quel est le 12<sup>e</sup> mois de l'année ?</button><div class="ans" hidden>Décembre.</div></div>
+ <div class="qa"><button aria-expanded="false">Quels mois ont un accent ?</button><div class="ans" hidden>Février, août et décembre.</div></div>
+
+ <div class="card" style="margin-top:22px;text-align:center"><h3>Tu te sens prêt ?</h3><a class="btn big" href="evaluations.html#mois">📝 Passer l'évaluation des mois</a></div>
+ <p class="row" style="margin-top:14px"><a class="btn alt" href="lecon-jours.html">← Les jours</a><a class="btn blue" href="lecon-annee.html">Leçon suivante : les jours de l'année →</a></p>
+</main>
+<footer>Le Défi du Temps · soutien scolaire CE2</footer>
+</div>
+<script src="js/common.js?v=20261124a"></script>
+<script>
+shell("lecons","Touche les mois pour les écouter, puis entraîne-toi à les écrire !");
+const saison=i=>i===11||i<2?"hiver":i<5?"printemps":i<8?"ete":"automne";
+$("#mgrid").innerHTML=MOIS.map((m,i)=>`<button class="mcard ${saison(i)}" data-speak="${m}"><small>mois n°${i+1}</small><b>🔊 ${m}</b></button>`).join("");
+</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Coin des parents – Le Défi du Temps</title>
+<link rel="stylesheet" href="css/style.css?v=20261124a">
+</head>
+<body>
+<div class="wrap">
+<div id="shell"></div>
+<main id="main">
+ <h1>👨‍👩‍👦 Coin des parents</h1>
+
+ <div class="card"><h2 style="margin-top:0">Le principe du site</h2>
+  <p><b>Partie 1 – Leçons :</b> explications, astuces, écoute des mots, exercices d'entraînement <u>sans note</u>.<br>
+  <b>Partie 2 – Évaluations :</b> questions notées, score, corrigé détaillé et bouton pour retourner à la leçon si le score est faible.</p></div>
+
+ <h2>Progression</h2>
+ <div class="card" id="prog"></div>
+
+ <h2>Plan sur 5 semaines <span class="hint">(10 à 15 min par jour)</span></h2>
+ <div class="card"><h3>🌞 Le rituel de 2 minutes (tous les jours)</h3><p>Chaque matin, il écrit <b>la date complète</b> (« mardi 24 novembre ») et dit le jour d'hier, d'aujourd'hui et de demain.</p></div>
+ <div id="plan"></div>
+
+ <h2>Comment l'accompagner</h2>
+ <div class="card"><ul>
+  <li><b>Séances courtes :</b> 10 à 15 minutes, 5 jours sur 7, valent mieux qu'une heure le dimanche.</li>
+  <li><b>Toujours la leçon avant l'évaluation.</b> Si le score est inférieur à 6/10, on repasse par la leçon.</li>
+  <li><b>Les erreurs sont normales :</b> félicitez l'effort (« tu as cherché ») avant le résultat.</li>
+  <li><b>Faites-lui expliquer :</b> « Comment as-tu su que IX = 9 ? » Expliquer, c'est retenir.</li>
+  <li><b>Mélangez écran et papier :</b> fiches d'écriture imprimées, calendrier sur le frigo.</li>
+  <li><b>Dans la vraie vie :</b> chanter les jours en se lavant les dents, repérer les chiffres romains sur une horloge, un livre, un monument.</li>
+  <li><b>Si l'écriture ou la lecture reste très pénible après 2 à 3 semaines</b> malgré ces séances, parlez-en à son enseignant(e) : il ou elle saura mieux cibler le besoin.</li></ul></div>
+
+ <div class="card" style="margin-top:14px"><h3>Programme CE2 visé</h3><p>Écrire correctement les jours et les mois (orthographe, accents) ; savoir qu'une année compte 12 mois, 52 semaines et 365 jours (366 si bissextile) ; connaître les mois de 30 et 31 jours ; lire et écrire les chiffres romains simples (I, V, X, jusqu'à XX) ; en anglais, connaître l'alphabet (26 lettres, prononciation) les phrases de base (saluer, être poli, se présenter), les nombres jusqu'à 20 et les couleurs ; en maths, comprendre la multiplication comme une addition répétée et mémoriser progressivement les tables de 2 à 9.</p></div>
+ <p class="noprint" style="margin-top:14px"><button class="btn alt" id="rz">Remettre la progression à zéro</button></p>
+</main>
+<footer>Le Défi du Temps · soutien scolaire CE2</footer>
+</div>
+<script src="js/common.js?v=20261124a"></script>
+<script src="js/evals-data.js?v=20261124a"></script>
+<script>
+shell("parents","Coin des parents : progression, plan et conseils.");
+function prog(){S=load();let h="<table><tr><th>Thème</th><th>Évaluation</th><th>Meilleur score</th></tr>";
+ for(const k of ["jours","mois","annee","romains","alphabet","phrases","nombres","tables","final"]){for(const x of EVALS[k].tests){const b=badge(S.scores[x.id]);h+=`<tr><td>${EVALS[k].e} ${EVALS[k].title}</td><td>${x.title}</td><td><span class="pill ${b.c}">${b.t}</span></td></tr>`}}
+ $("#prog").innerHTML=h+"</table><p class='hint'>Les scores sont enregistrés dans le navigateur de cet appareil. <a href='carnet.html'>Voir le carnet de progression et faire une sauvegarde →</a></p>"}
+prog();
+const PLAN=[["Semaine 1","Jours & mois",[
+ ["s1l","Lundi","📖 Leçon des jours (astuce des « DI » + écriture) puis 📝 évaluation « Quiz »"],
+ ["s1m","Mardi","📝 Évaluations « Remets dans l'ordre » et « Écris les jours »"],
+ ["s1me","Mercredi","📖 Leçon des mois (mois en « bre », accents) puis 📝 évaluation « Quiz »"],
+ ["s1j","Jeudi","📝 Évaluations « Remets dans l'ordre » et « Écris les mois »"],
+ ["s1v","Vendredi","✏️ Fiches d'écriture imprimées + refaire les évaluations à revoir"],
+ ["s1w","Week-end","🎲 Jeu en famille : « Quel jour sera-t-on dans 3 jours ? »"]]],
+ ["Semaine 2","Année & romains",[
+ ["s2l","Lundi","📖 Leçon de l'année (comptine + poing) puis 📝 « 31, 30 ou 28 jours ? »"],
+ ["s2m","Mardi","📝 « Le quiz de l'année »"],
+ ["s2me","Mercredi","📖 Leçon des chiffres romains (I, V, X) puis 📝 « Je lis »"],
+ ["s2j","Jeudi","📝 « J'écris » et « Je construis des nombres »"],
+ ["s2v","Vendredi","🏆 Le contrôle final"],
+ ["s2w","Week-end","🔍 Chasse aux chiffres romains : horloge, livres, monuments…"]]],
+ ["Semaine 3","English",[
+ ["s3l","Lundi","📖 Leçon de l'alphabet (écouter les 26 lettres, épeler son prénom)"],
+ ["s3m","Mardi","📝 Évaluations « Quiz de l'alphabet » et « J'écoute les lettres »"],
+ ["s3me","Mercredi","📖 Leçon des phrases de base (dialogue avec Sam)"],
+ ["s3j","Jeudi","📝 Évaluations « Français ↔ English » et « J'écoute les phrases »"],
+ ["s3v","Vendredi","📝 « Je construis des phrases » et « Que répondre ? »"],
+ ["s3w","Week-end","🗣️ Jeu en famille : dire bonjour et se présenter en anglais"]]],
+ ["Semaine 4","English : nombres, couleurs & bilan",[
+ ["s4l","Lundi","📖 Leçon des nombres et des couleurs"],
+ ["s4m","Mardi","📝 « Les nombres : quiz » et « J'écoute les nombres »"],
+ ["s4me","Mercredi","📝 « Les couleurs : quiz » et « J'écoute les couleurs »"],
+ ["s4j","Jeudi","📝 « Ordre et mots »"],
+ ["s4v","Vendredi","🏆 Le contrôle final English"],
+ ["s4w","Week-end","🎨 Jeu en famille : « Quelle couleur ? » et compter jusqu'à 20 en anglais"]]],
+ ["Semaine 5","Maths : les tables de multiplication",[
+ ["s5l","Lundi","📖 Leçon des tables (groupes, tableau magique, astuces) + entraînement libre"],
+ ["s5m","Mardi","📝 « Les tables de 2, 3, 4 et 5 »"],
+ ["s5me","Mercredi","📝 « Les tables de 6, 7, 8 et 9 »"],
+ ["s5j","Jeudi","📝 « Choisis le bon résultat » et « Calcul à trous »"],
+ ["s5v","Vendredi","📝 « Ordre et suites », « Petits problèmes » puis 🏆 le contrôle final Maths"],
+ ["s5w","Week-end","🎲 Jeu en famille : « Je dis une multiplication, tu réponds vite ! »"]]]];
+$("#plan").innerHTML=PLAN.map(([a,b,rows])=>`<div class="card" style="margin-top:12px"><h3>${a} – <span style="color:var(--romains)">${b}</span></h3>${rows.map(([id,d,t])=>`<label class="check"><input type="checkbox" data-id="${id}" ${S.plan[id]?"checked":""}><span><b>${d}</b> – ${t}</span></label>`).join("")}</div>`).join("");
+$$("#plan input").forEach(c=>c.onchange=()=>{S=load();S.plan[c.dataset.id]=c.checked;save()});
+$("#rz").onclick=()=>{if(confirm("Effacer toute la progression ?")){S=load();S.scores={};S.plan={};S.hist=[];S.lessons={};S.days=[];save();location.reload()}};
+</script>
+</body>
+</html>

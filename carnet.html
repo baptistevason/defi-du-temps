@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Mon carnet de champion – Le Défi du Temps</title>
+<link rel="stylesheet" href="css/style.css?v=20261124a">
+</head>
+<body>
+<div class="wrap">
+<div id="shell"></div>
+<main id="main">
+ <h1>🏅 Mon carnet de champion</h1>
+ <div id="hero"></div>
+
+ <h2>🎖️ Mes médailles</h2>
+ <div class="badges" id="badges"></div>
+
+ <h2>📊 Mes thèmes</h2>
+ <div id="topics"></div>
+
+ <h2>📈 Mes progrès</h2>
+ <div id="prog"></div>
+
+ <div id="dipwrap">
+  <h2 class="noprint">🎓 Mon diplôme</h2>
+  <div class="diplome" id="dip"></div>
+  <p class="noprint" style="text-align:center"><button class="btn big" id="pr">🖨️ Imprimer mon diplôme</button></p>
+ </div>
+
+ <div class="card noprint" style="margin-top:22px">
+  <h3>💾 Sauvegarder mon travail</h3>
+  <p>Ta progression est gardée dans le navigateur de cet appareil. Pour ne <b>jamais la perdre</b> (changement de téléphone ou d'ordinateur, navigateur nettoyé), enregistre un fichier de sauvegarde, puis recharge-le quand tu veux, sur n'importe quel appareil.</p>
+  <div class="row"><button class="btn green" id="ex">💾 Télécharger ma sauvegarde</button>
+  <label class="btn alt" for="im" style="cursor:pointer">📂 Recharger une sauvegarde</label><input type="file" id="im" accept=".json,application/json" style="display:none"></div>
+  <p class="hint" id="bk"></p><p id="msg" role="status"></p>
+ </div>
+</main>
+<footer>Le Défi du Temps · soutien scolaire CE2</footer>
+</div>
+<script src="js/common.js?v=20261124a"></script>
+<script src="js/evals-data.js?v=20261124a"></script>
+<script>
+shell("carnet","Regarde tout ce que tu as accompli !");
+var KEYS=["jours","mois","annee","romains","alphabet","phrases","nombres","tables","final"];
+function frDate(s){var p=s.split("-");return p[2]+"/"+p[1]+"/"+p[0]}
+function testTitle(id){for(var i=0;i<KEYS.length;i++){var t=EVALS[KEYS[i]].tests.filter(function(x){return x.id===id})[0];if(t)return EVALS[KEYS[i]].e+" "+t.title}return id}
+function render(){
+ S=load();
+ var L=levelOf(),st=streaks(),E=earned(),nE=Object.keys(E).length;
+ var pct=L.next?Math.round(100*(L.xp-L.from)/(L.next-L.from)):100;
+ var week=S.hist.filter(function(x){return x.t>Date.now()-7*864e5}).length;
+ var lessons=Object.keys(S.lessons).length;
+ var mast=KEYS.slice(0,8).filter(topicMastered).length;
+ $("#hero").innerHTML="<div class='card'><div class='lvlbox'><div class='lvlnum'><small>Niveau</small><span>"+L.n+"</span></div><div style='flex:1;min-width:200px'><h2 style='margin:0'>"+(S.name?esc(S.name)+", ":"")+L.name+"</h2><p style='margin:.2em 0 .5em'>⭐ <b>"+L.xp+" points</b>"+(L.next?" · encore "+(L.next-L.xp)+" pour le niveau suivant":" · niveau maximum atteint !")+"</p><div class='bar' role='progressbar' aria-valuenow='"+pct+"' aria-valuemin='0' aria-valuemax='100'><i style='width:"+pct+"%'></i></div></div></div>"
+  +"<div class='stats'><div class='stat'><b>🔥 "+st.cur+"</b>jour"+(st.cur>1?"s":"")+" de suite<br><small>record : "+st.best+"</small></div><div class='stat'><b>📖 "+lessons+"/8</b>leçons lues</div><div class='stat'><b>📝 "+S.hist.length+"</b>évaluations faites<br><small>"+week+" cette semaine</small></div><div class='stat'><b>🌟 "+mast+"/8</b>thèmes maîtrisés</div><div class='stat'><b>🎖️ "+nE+"/"+BADGES.length+"</b>médailles</div></div></div>";
+ $("#badges").innerHTML=BADGES.map(function(b){var on=E[b[0]];return "<div class='bdg"+(on?"":" off")+"'><i>"+(on?b[1]:"❓")+"</i><b>"+b[2]+"</b><small>"+b[3]+"</small></div>"}).join("");
+ $("#topics").innerHTML=KEYS.map(function(k){var p=topicPct(k),T=EVALS[k],done=T.tests.filter(function(x){return S.scores[x.id]}).length,lk=TOPICS.filter(function(o){return o.k===k})[0];
+  var read=lk?(S.lessons[k]?"✅ leçon lue":"⬜ leçon à lire"):"";
+  return "<div class='card' style='margin-bottom:10px'><div style='display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap'><b>"+T.e+" "+T.title+"</b><span class='hint'>"+read+" · "+done+"/"+T.tests.length+" évaluations faites</span></div><div class='bar' style='margin-top:6px'><i style='width:"+p+"%;background:"+(p>=90?"var(--ok)":p>=60?"#F4B400":"#E57373")+"'></i></div><small>"+p+" %"+(topicMastered(k)?" · 🌟 Maîtrisé !":"")+"</small></div>"}).join("");
+ var ids=Object.keys(S.scores),imp=[];
+ ids.forEach(function(id){var h=S.hist.filter(function(x){return x.id===id});if(h.length>1){var f=h[0],b=Math.max.apply(null,h.map(function(x){return x.sc}));if(b>f.sc)imp.push("<li><b>"+testTitle(id)+"</b> : "+f.sc+"/"+f.n+" au 1er essai → <b>"+b+"/"+f.n+"</b> maintenant (+"+(b-f.sc)+") 📈</li>")}});
+ var last=S.hist.slice(-20);
+ var h="";
+ if(imp.length)h+="<div class='card' style='background:#C9F2D3'><h3 style='margin-top:0'>Bravo, tu progresses !</h3><ul>"+imp.join("")+"</ul></div>";
+ if(last.length){h+="<div class='card' style='margin-top:12px'><h3 style='margin-top:0'>Mes derniers essais</h3><div class='hbars' role='img' aria-label='Scores des derniers essais'>"+last.map(function(x){var r=Math.round(100*x.sc/x.n);return "<span title='"+frDate(x.d)+" : "+x.sc+"/"+x.n+"' style='height:"+Math.max(r,4)+"%;background:"+(r>=90?"#7CD992":r>=60?"#FFD93D":"#F28B82")+"'></span>"}).join("")+"</div><p class='hint'>Chaque barre est un essai (vert : maîtrisé, jaune : en progrès, rouge : à revoir).</p><ul>"
+   +S.hist.slice(-6).reverse().map(function(x){return "<li>"+frDate(x.d)+" – "+testTitle(x.id)+" : <b>"+x.sc+"/"+x.n+"</b></li>"}).join("")+"</ul></div>"}
+ else h+="<div class='card'><p>Pas encore d'évaluation. Fais ta première et tes progrès apparaîtront ici ! <a href='evaluations.html'>📝 Commencer</a></p></div>";
+ $("#prog").innerHTML=h;
+ var tot=KEYS.length,mm=KEYS.slice(0,8).filter(topicMastered);
+ $("#dip").innerHTML="<div style='font-size:2.6rem'>🏆</div><h2>Diplôme du Défi du Temps</h2><p>décerné à</p><div class='nm'>"+(S.name?esc(S.name):"………………………")+"</div><p>pour son travail en CE2 : <b>"+L.name+"</b> (niveau "+L.n+", "+L.xp+" points)</p><p>"+(mm.length?"Thèmes maîtrisés : "+mm.map(function(k){return EVALS[k].e+" "+EVALS[k].title}).join(", "):"Thèmes en cours d'apprentissage : bravo pour ta persévérance !")+"</p><p>🎖️ "+nE+" médaille"+(nE>1?"s":"")+" · 📝 "+S.hist.length+" évaluations · 🔥 record de "+st.best+" jour"+(st.best>1?"s":"")+" de suite</p><p>Fait le "+frDate(today())+"</p>";
+ $("#bk").textContent=S.lastExport?("Dernière sauvegarde téléchargée le "+frDate(S.lastExport)+"."):"Aucune sauvegarde téléchargée pour l'instant.";
+}
+render();
+$("#pr").onclick=function(){document.body.classList.add("pd");window.onafterprint=function(){document.body.classList.remove("pd")};window.print()};
+$("#ex").onclick=function(){
+ S=load();S.lastExport=today();save();
+ var data={app:"defi-du-temps",v:2,exportedAt:new Date().toISOString(),data:S};
+ var nm=(S.name||"eleve").toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"eleve";
+ var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,1)],{type:"application/json"}));
+ a.download="defi-du-temps-"+nm+"-"+today()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500);
+ $("#msg").textContent="✅ Sauvegarde téléchargée. Garde ce fichier précieusement (cloud, e-mail, clé USB).";render();
+};
+function num(x){return typeof x==="number"&&isFinite(x)&&x>=0&&x<10000}
+function dstr(x){return typeof x==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(x)}
+$("#im").onchange=function(ev){
+ var f=ev.target.files[0];if(!f)return;
+ if(f.size>2e6){$("#msg").textContent="❌ Ce fichier est trop gros pour être une sauvegarde.";return}
+ var r=new FileReader();r.onload=function(){
+  try{
+   var j=JSON.parse(r.result);if(!j||j.app!=="defi-du-temps"||!j.data)throw 0;var d=j.data;S=load();var add=0;
+   if(typeof d.name==="string"&&!S.name)S.name=d.name.slice(0,20);
+   Object.keys(d.scores||{}).forEach(function(id){var b=d.scores[id];if(!b||!num(b.best)||!num(b.n)||!b.n||b.best>b.n)return;var a=S.scores[id];if(!a||b.best/b.n>a.best/a.n){S.scores[id]={best:b.best,n:b.n,last:num(b.last)?b.last:b.best,date:dstr(b.date)?b.date:today()};add++}});
+   var seen={};S.hist.forEach(function(x){seen[x.id+"|"+x.t]=1});
+   (d.hist||[]).forEach(function(x){if(x&&typeof x.id==="string"&&num(x.sc)&&num(x.n)&&dstr(x.d)&&typeof x.t==="number"&&!seen[x.id+"|"+x.t]){S.hist.push({id:x.id,sc:x.sc,n:x.n,d:x.d,t:x.t});seen[x.id+"|"+x.t]=1;add++}});
+   S.hist.sort(function(a,b){return a.t-b.t});S.hist=S.hist.slice(-600);
+   Object.keys(d.lessons||{}).forEach(function(k){if(dstr(d.lessons[k])&&(!S.lessons[k]||d.lessons[k]<S.lessons[k]))S.lessons[k]=d.lessons[k]});
+   (d.days||[]).forEach(function(x){if(dstr(x)&&S.days.indexOf(x)<0)S.days.push(x)});S.days.sort();S.days=S.days.slice(-400);
+   Object.keys(d.plan||{}).forEach(function(k){if(d.plan[k]===true)S.plan[k]=true});
+   save();render();$("#msg").textContent="✅ Sauvegarde rechargée : "+add+" élément(s) retrouvé(s). Rien n'a été effacé.";
+  }catch(e){$("#msg").textContent="❌ Ce fichier n'est pas une sauvegarde du Défi du Temps."}
+  ev.target.value="";
+ };r.readAsText(f);
+};
+</script>
+</body>
+</html>

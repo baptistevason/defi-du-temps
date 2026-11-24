@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Leçon : les tables de multiplication – Le Défi du Temps</title>
+<link rel="stylesheet" href="css/style.css?v=20261124a">
+</head>
+<body>
+<div class="wrap">
+<div id="shell"></div>
+<main id="main">
+ <span class="sec">Partie 1 · Leçon</span>
+ <h1 style="color:var(--tables)">✖️ Les tables de multiplication</h1>
+
+ <h2>1. Je découvre</h2>
+ <p>Multiplier, c'est <b>additionner plusieurs fois le même nombre</b>. Au lieu d'écrire 4 + 4 + 4, on écrit <b>3 × 4</b> (« 3 fois 4 »). Fais varier les curseurs !</p>
+ <div class="card">
+  <p><label for="ga">Nombre de groupes : <b id="gav"></b></label><br><input type="range" id="ga" min="1" max="10" value="3" style="width:100%"></p>
+  <p><label for="gb">Dans chaque groupe : <b id="gbv"></b></label><br><input type="range" id="gb" min="1" max="10" value="4" style="width:100%"></p>
+  <div class="dots" id="dots" aria-hidden="true"></div>
+  <div class="hint" id="gadd" style="text-align:center"></div>
+  <div class="bigeq" id="geq"></div>
+  <p style="text-align:center"><button class="btn" id="gsp">🔊 Écouter</button></p>
+ </div>
+
+ <h2>2. Choisis ta table</h2>
+ <p>Touche une table pour la voir, puis touche une ligne pour l'écouter 🔊</p>
+ <div class="tabl" id="tabl"></div>
+ <div class="card" style="margin-top:12px" id="tshow"></div>
+
+ <h2>3. Le tableau magique</h2>
+ <p>Touche une case : tu vois la ligne et la colonne s'allumer. Regarde bien : <b>3 × 7 et 7 × 3 donnent le même résultat</b> ! Il y a donc moitié moins de choses à apprendre.</p>
+ <div style="overflow-x:auto"><table class="pyth" id="pyth" aria-label="Tableau des tables de multiplication"></table></div>
+ <div class="bigeq" id="peq" style="font-size:1.6rem" role="status">Touche une case</div>
+
+ <h2>4. Mes astuces</h2>
+ <div class="tip"><b class="t">🎯 Les faciles :</b> <span class="k">× 1</span> = le même nombre · <span class="k">× 2</span> = le double (6 × 2 : 6 + 6) · <span class="k">× 10</span> = on écrit un 0 à droite (7 × 10 = 70).</div>
+ <div class="tip"><b class="t">🖐️ La table de 5 :</b> les résultats finissent par <b>0 ou 5</b> : 5, 10, 15, 20, 25… C'est comme lire l'heure sur une horloge, de 5 en 5 !</div>
+ <div class="tip"><b class="t">✌️✌️ La table de 4 :</b> c'est <b>le double du double</b>. 4 × 6 : le double de 6 est 12, le double de 12 est 24.</div>
+ <div class="tip"><b class="t">🤯 La table de 9 :</b> les deux chiffres du résultat font toujours <b>9</b> quand on les additionne : 9 × 7 = 63 → 6 + 3 = 9. Et avec tes doigts : baisse le doigt n° 7, il reste 6 doigts à gauche et 3 à droite : <b>63</b> !</div>
+ <div class="tip"><b class="t">🔁 Les tables se retournent :</b> 3 × 8 = 8 × 3 = 24. Si tu sais 8 × 3, tu sais 3 × 8.</div>
+ <div class="tip"><b class="t">🔢 Le truc des 5-6-7-8 :</b> <span class="k">56 = 7 × 8</span> (on dit « 5, 6, 7, 8 » : 56 = 7 × 8). Difficiles à retenir : <span class="k">6 × 7 = 42</span> · <span class="k">6 × 8 = 48</span> · <span class="k">7 × 9 = 63</span> · <span class="k">8 × 9 = 72</span>.</div>
+
+ <h2>5. Je m'entraîne <span class="hint">(sans note)</span></h2>
+ <p>Choisis les tables que tu veux réviser, puis réponds. Si tu te trompes, tu vois la bonne réponse et une astuce. Aucune note : tu peux recommencer autant que tu veux !</p>
+ <div class="card">
+  <div class="row" id="ptabs" role="group" aria-label="Tables à réviser"></div>
+  <div class="bigeq" id="pq" style="margin:14px 0">—</div>
+  <div class="row" style="justify-content:center"><input id="pa" class="txt" inputmode="numeric" pattern="[0-9]*" autocomplete="off" style="max-width:160px;font-size:1.6rem" aria-label="Ta réponse"> <button class="btn" id="pv">Vérifier</button></div>
+  <div class="fb" id="pf" role="status" style="margin-top:10px"></div>
+  <p class="hint" id="ps" style="text-align:center"></p>
+ </div>
+
+ <div class="retiens"><h3>✅ Je retiens</h3><ul>
+  <li><b>3 × 4</b> veut dire <b>4 + 4 + 4</b> : 3 groupes de 4.</li>
+  <li>Les tables se retournent : <b>a × b = b × a</b>.</li>
+  <li>× 2 = le double · × 10 = j'ajoute un 0 · × 5 finit par 0 ou 5.</li>
+  <li>× 9 : les chiffres du résultat font 9 (9 × 7 = 63 → 6 + 3).</li>
+  <li>Les plus difficiles : 6 × 7 = 42 · 6 × 8 = 48 · 7 × 8 = 56 · 7 × 9 = 63 · 8 × 9 = 72.</li></ul></div>
+
+ <h2>6. Je vérifie que j'ai compris <span class="hint">(touche la question)</span></h2>
+ <div class="qa"><button aria-expanded="false">Que veut dire 5 × 3 ?</button><div class="ans" hidden>5 fois 3 : 3 + 3 + 3 + 3 + 3 = 15.</div></div>
+ <div class="qa"><button aria-expanded="false">Si je sais que 4 × 7 = 28, combien font 7 × 4 ?</button><div class="ans" hidden>28 aussi : les tables se retournent.</div></div>
+ <div class="qa"><button aria-expanded="false">Combien font 9 × 6 ? (astuce : les chiffres font 9)</button><div class="ans" hidden>54 (5 + 4 = 9).</div></div>
+
+ <div class="card" style="margin-top:22px;text-align:center"><h3>Tu te sens prêt ?</h3><a class="btn big" href="evaluations.html#tables">📝 Passer les évaluations des tables</a></div>
+ <p class="row" style="margin-top:14px"><a class="btn alt" href="lecons.html">← Toutes les leçons</a><a class="btn blue" href="fiches.html#tables">🖨️ Imprimer le tableau</a></p>
+</main>
+<footer>Le Défi du Temps · soutien scolaire CE2</footer>
+</div>
+<script src="js/common.js?v=20261124a"></script>
+<script src="js/evals-data.js?v=20261124a"></script>
+<script>
+shell("lecons","Les tables, c'est des paquets ! Touche, écoute et entraîne-toi !");
+const FR="fr-FR";
+const say2=(a,b)=>a+" fois "+b+" égale "+(a*b);
+/* 1. groupes */
+const EM=["🍎","⭐","🍪","⚽","🐟","🌸"];
+function groups(){
+ const a=+$("#ga").value,b=+$("#gb").value,e=EM[(a+b)%EM.length];
+ $("#gav").textContent=a;$("#gbv").textContent=b;
+ $("#dots").innerHTML=Array.from({length:a},()=>'<span class="dgrp">'+Array.from({length:b},()=>e).join("")+'</span>').join("");
+ $("#gadd").textContent=Array.from({length:a},()=>b).join(" + ")+" = "+(a*b);
+ $("#geq").textContent=a+" × "+b+" = "+(a*b);
+}
+$("#ga").oninput=$("#gb").oninput=groups;groups();
+$("#gsp").onclick=()=>speak(say2(+$("#ga").value,+$("#gb").value),FR);
+/* 2. une table */
+$("#tabl").innerHTML=[2,3,4,5,6,7,8,9,10].map(n=>'<button data-t="'+n+'">Table de '+n+'</button>').join("");
+function showTable(n){
+ const rows=Array.from({length:10},(_,i)=>i+1).map(i=>'<button class="btn alt" style="margin:3px;min-width:170px;justify-content:flex-start" data-line="'+i+'">🔊 '+n+' × '+i+' = <b>'+(n*i)+'</b></button>').join("");
+ $("#tshow").innerHTML='<h3 style="margin-top:0">La table de '+n+'</h3><p class="hint">Les résultats : '+Array.from({length:10},(_,i)=>n*(i+1)).join(" · ")+'</p><div>'+rows+'</div><p><button class="btn" id="tall">🔊 Écouter toute la table</button></p>';
+ $$("[data-line]",$("#tshow")).forEach(b=>b.onclick=()=>speak(say2(n,+b.dataset.line),FR));
+ $("#tall").onclick=()=>speakSeq(Array.from({length:10},(_,i)=>say2(n,i+1)),FR);
+}
+$$("#tabl button").forEach(b=>b.onclick=()=>{showTable(+b.dataset.t);$$("#tabl button").forEach(x=>x.style.background="");b.style.background="#C7D2FE"});
+showTable(7);
+/* 3. tableau */
+let h='<tr><th>×</th>'+Array.from({length:10},(_,i)=>'<th>'+(i+1)+'</th>').join("")+'</tr>';
+for(let r=1;r<=10;r++){h+='<tr><th>'+r+'</th>'+Array.from({length:10},(_,c)=>'<td data-r="'+r+'" data-c="'+(c+1)+'">'+(r*(c+1))+'</td>').join("")+'</tr>'}
+$("#pyth").innerHTML=h;
+$$("#pyth td").forEach(td=>td.onclick=()=>{
+ const r=+td.dataset.r,c=+td.dataset.c;
+ $$("#pyth td").forEach(x=>{x.className=(+x.dataset.r===r&&+x.dataset.c===c)?"sel":(+x.dataset.r===c&&+x.dataset.c===r)?"hl":(+x.dataset.r===r||+x.dataset.c===c)?"cross":""});
+ $("#peq").textContent=r+" × "+c+" = "+(r*c)+(r!==c?"   et   "+c+" × "+r+" = "+(r*c):"");
+ speak(say2(r,c),FR);
+});
+/* 5. entraînement libre */
+$("#ptabs").innerHTML=[2,3,4,5,6,7,8,9].map(n=>'<label class="check" style="min-width:90px"><input type="checkbox" value="'+n+'" '+(n<=5?"checked":"")+'><span>× '+n+'</span></label>').join("");
+let cur=null,streak=0,tot=0;
+function nq(){
+ const tabs=[...$$("#ptabs input:checked")].map(x=>+x.value);
+ if(!tabs.length){$("#pq").textContent="Coche au moins une table";return}
+ let a=pick(tabs),b=rndi(2,10);if(Math.random()<.5){const t=a;a=b;b=t}
+ cur={a:a,b:b};$("#pq").textContent=a+" × "+b+" = ?";$("#pa").value="";$("#pa").focus();
+}
+function chk(){
+ if(!cur)return;const v=$("#pa").value.trim();if(!v)return;
+ const ok=+v===cur.a*cur.b;tot++;
+ if(ok){streak++;$("#pf").className="fb good";$("#pf").textContent="✅ Bravo ! "+cur.a+" × "+cur.b+" = "+(cur.a*cur.b);if(streak>0&&streak%5===0)confetti()}
+ else{streak=0;$("#pf").className="fb bad";$("#pf").textContent="❌ Pas tout à fait. "+mulTip(cur.a,cur.b)}
+ $("#ps").textContent="🔥 "+streak+" bonne"+(streak>1?"s":"")+" réponse"+(streak>1?"s":"")+" de suite · "+tot+" question"+(tot>1?"s":"")+" faite"+(tot>1?"s":"");
+ nq();
+}
+$("#pv").onclick=chk;$("#pa").addEventListener("keydown",e=>{if(e.key==="Enter")chk()});
+$$("#ptabs input").forEach(i=>i.onchange=nq);
+nq();
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Leçon : phrases de base en anglais – Le Défi du Temps</title>
+<link rel="stylesheet" href="css/style.css?v=20261124a">
+</head>
+<body>
+<div class="wrap">
+<div id="shell"></div>
+<main id="main">
+ <span class="sec">Partie 1 · Leçon</span>
+ <h1 style="color:var(--phrases)">💬 English : basic phrases</h1>
+
+ <h2>1. Je découvre</h2>
+ <p>Voici les phrases de base pour parler anglais. Touche une phrase pour l'<b>écouter</b> 🔊 et répète-la à voix haute !</p>
+ <p class="noprint"><button class="btn alt" id="tg">🙈 Cacher le français (pour tester ma mémoire)</button></p>
+ <div id="groups"></div>
+ <p class="hint">Dans « My name is Tom », remplace <b>Tom</b> par ton prénom.</p>
+
+ <h2>2. Mes astuces</h2>
+ <div class="tip"><b class="t">🕐 Bonjour, mais quand ?</b> <span class="k">Hello</span> et <span class="k">Hi</span> : à tout moment. <span class="k">Good morning</span> : le matin. <span class="k">Good night</span> : seulement quand on va dormir (ce n'est pas « bonne soirée »).</div>
+ <div class="tip"><b class="t">✨ Les mots magiques :</b> <span class="k">Please</span> (s'il te plaît) et <span class="k">Thank you</span> (merci). Quand on te dit « Thank you », tu réponds <span class="k">You're welcome</span>.</div>
+ <div class="tip"><b class="t">✂️ Les mots raccourcis :</b> <span class="k">I'm</span> = I am (je suis) · <span class="k">What's</span> = What is · <span class="k">You're</span> = You are. L'apostrophe remplace des lettres.</div>
+ <div class="tip"><b class="t">🇫🇷 → 🇬🇧 Piège :</b> en anglais, on ne dit pas « j'ai 8 ans » mais « je suis 8 ans » : <span class="k">I'm eight years old</span>.</div>
+
+ <h2>3. Je m'entraîne <span class="hint">(sans note)</span></h2>
+ <div class="card">
+  <h3>🗣️ Un petit dialogue</h3>
+  <p class="hint">Touche chaque bulle pour l'écouter. Sam est ton nouvel ami !</p>
+  <div id="dlg"></div>
+ </div>
+ <div class="card" style="margin-top:14px">
+  <h3>🙋 Présente-toi</h3>
+  <p><label for="nm">Écris ton prénom :</label></p>
+  <div class="row"><input id="nm" class="txt" style="max-width:300px;font-size:1.2rem" maxlength="15" autocomplete="off" placeholder="Ton prénom"><button class="btn big" id="go">🔊 Dire la phrase</button></div>
+  <div class="fb mid" id="me" style="font-size:1.2rem">…</div>
+ </div>
+ <h3 style="margin-top:20px">Écrire des phrases anglaises</h3>
+ <p>Méthode <b>Regarde – Cache – Écris – Vérifie</b>. Pas besoin de majuscule ni de ponctuation.</p>
+ <div class="cc" data-lang="en-GB" data-sep="|" data-words="Hello|Good morning|Thank you|Goodbye|How are you|I'm fine, thank you|What's your name|See you tomorrow"></div>
+
+ <div class="retiens"><h3>✅ Je retiens</h3><ul>
+  <li><b>Hello / Hi</b> = bonjour, salut · <b>Goodbye</b> = au revoir · <b>Good night</b> = bonne nuit.</li>
+  <li><b>Please</b> = s'il te plaît · <b>Thank you</b> = merci · <b>You're welcome</b> = de rien · <b>Sorry</b> = désolé.</li>
+  <li><b>What's your name?</b> → <b>My name is …</b> · <b>How are you?</b> → <b>I'm fine, thank you.</b></li>
+  <li><b>How old are you?</b> → <b>I'm eight years old.</b></li></ul></div>
+
+ <h2>4. Je vérifie que j'ai compris <span class="hint">(touche la question)</span></h2>
+ <div class="qa"><button aria-expanded="false">Que réponds-tu à « Thank you » ?</button><div class="ans" hidden>You're welcome. (De rien.)</div></div>
+ <div class="qa"><button aria-expanded="false">Comment dit-on « Comment tu t'appelles ? » en anglais ?</button><div class="ans" hidden>What's your name?</div></div>
+ <div class="qa"><button aria-expanded="false">Comment dit-on « Au revoir » ?</button><div class="ans" hidden>Goodbye!</div></div>
+
+ <div class="card" style="margin-top:22px;text-align:center"><h3>Tu te sens prêt ?</h3><a class="btn big" href="evaluations.html#phrases">📝 Passer l'évaluation des phrases</a></div>
+ <p class="row" style="margin-top:14px"><a class="btn alt" href="lecon-alphabet.html">← L'alphabet</a><a class="btn blue" href="lecon-nombres.html">Leçon suivante : numbers &amp; colours →</a></p>
+</main>
+<footer>Le Défi du Temps · soutien scolaire CE2</footer>
+</div>
+<script src="js/common.js?v=20261124a"></script>
+<script>
+shell("lecons","Hello ! Touche les phrases pour les écouter, puis répète !");
+$("#groups").innerHTML=PH_GROUPS.map(g=>`<h3 style="margin-top:16px">${g.t}</h3><div class="phr">${g.items.map(p=>`<button class="phrase" data-speak="${p[0].replace(/"/g,"")}" data-lang="en-GB"><span>🔊</span><span><span class="en">${p[0]}</span><br><span class="fr">${p[1]}</span></span></button>`).join("")}</div>`).join("");
+let hid=false;$("#tg").onclick=()=>{hid=!hid;$$(".phrase .fr").forEach(e=>e.classList.toggle("hide",hid));$("#tg").textContent=hid?"👀 Montrer le français":"🙈 Cacher le français (pour tester ma mémoire)"};
+const D=[["Sam","Hello!"],["me","Hi!"],["Sam","What's your name?"],["me","My name is …"],["Sam","How are you?"],["me","I'm fine, thank you."],["Sam","See you tomorrow!"],["me","Goodbye!"]];
+$("#dlg").innerHTML=D.map(d=>`<button class="bub ${d[0]==="me"?"me":""}" data-speak="${d[1].replace("…","Tom")}" data-lang="en-GB" style="display:block;font:inherit"><small>${d[0]==="me"?"Toi":"Sam"}</small>${d[1]}</button>`).join("");
+function me(){const v=$("#nm").value.trim().replace(/[^A-Za-zÀ-ÿ' -]/g,"");if(!v)return;const t="My name is "+v+".";$("#me").textContent=t;speak(t,"en-GB")}
+$("#go").onclick=me;$("#nm").addEventListener("keydown",e=>{if(e.key==="Enter")me()});
+</script>
+</body>
+</html>
