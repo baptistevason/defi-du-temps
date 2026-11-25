@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Coin des parents – Le Défi du Temps</title>
-<link rel="stylesheet" href="css/style.css?v=20261125a">
+<link rel="stylesheet" href="css/style.css?v=20261125b">
 </head>
 <body>
 <div class="wrap">
@@ -17,6 +17,7 @@
   <p><b>Partie 1 – Leçons :</b> explications, astuces, écoute des mots, exercices d'entraînement <u>sans note</u>.<br>
   <b>Partie 2 – Évaluations :</b> questions notées, score, corrigé détaillé et bouton pour retourner à la leçon si le score est faible.</p></div>
 
+ <p><a class="btn big green" href="suivi.html">📈 Voir le suivi détaillé des progrès (courbes, évolution, jeux)</a></p>
  <h2>Progression</h2>
  <div class="card" id="prog"></div>
 
@@ -40,8 +41,8 @@
 </main>
 <footer>Le Défi du Temps · soutien scolaire CE2</footer>
 </div>
-<script src="js/common.js?v=20261125a"></script>
-<script src="js/evals-data.js?v=20261125a"></script>
+<script src="js/common.js?v=20261125b"></script>
+<script src="js/evals-data.js?v=20261125b"></script>
 <script>
 shell("parents","Coin des parents : progression, plan et conseils.");
 $("#gtab").innerHTML="<tr><th>Jeu</th><th>Ce qu'il travaille</th><th>Parties</th><th>Record</th></tr>"+GAMES.map(g=>{const x=(load().games||{})[g.k];return `<tr><td>${g.e} ${g.t}</td><td>${g.trains}</td><td>${x?x.plays:0}</td><td>${x?esc(x.bestLabel||String(x.best)):"–"}</td></tr>`}).join("");

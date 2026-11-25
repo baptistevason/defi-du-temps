@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Suivi des progrès – Le Défi du Temps</title>
+<link rel="stylesheet" href="css/style.css?v=20261125b">
+<style>
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:12px 0}
+.kpi{background:#fff;border:3px solid var(--ink);border-radius:16px;padding:10px;text-align:center}.kpi b{display:block;font-size:1.7rem}
+table.sv{width:100%;border-collapse:collapse;font-size:.92rem}table.sv th,table.sv td{border-bottom:2px solid var(--line);padding:6px 4px;text-align:left}
+.up{color:#15803D;font-weight:800}.dn{color:#B91C1C;font-weight:800}
+.mb{display:inline-block;height:10px;border-radius:5px;background:#E2E8F0;width:80px;vertical-align:middle;overflow:hidden}.mb i{display:block;height:100%}
+svg text{font-family:inherit;font-size:11px;fill:#475569}
+.lg{display:flex;gap:12px;flex-wrap:wrap;font-size:.9rem;margin-top:6px}.lg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div id="shell"></div>
+<main id="main">
+ <a class="btn alt noprint" href="parents.html">← Coin des parents</a>
+ <h1>📈 Suivi des progrès</h1>
+ <div id="src"></div>
+ <div id="out"></div>
+</main>
+<footer>Le Défi du Temps · soutien scolaire CE2</footer>
+</div>
+<script src="js/common.js?v=20261125b"></script>
+<script src="js/evals-data.js?v=20261125b"></script>
+<script>
+shell("parents","Voici les progrès réalisés.");
+const b64u=a=>btoa(String.fromCharCode(...a)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+const unb64u=s=>Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")),c=>c.charCodeAt(0));
+async function decode(h){const k=h.slice(0,2),raw=unb64u(h.slice(2));let bytes=raw;
+ if(k==="g."){const ds=new DecompressionStream("gzip");bytes=new Uint8Array(await new Response(new Blob([raw]).stream().pipeThrough(ds)).arrayBuffer())}
+ return JSON.parse(new TextDecoder().decode(bytes))}
+const num=x=>typeof x==="number"&&isFinite(x)&&x>=0&&x<1e4;
+function clean(d){const o={name:"",scores:{},plan:{},hist:[],lessons:{},days:[],games:{}};
+ if(typeof d.name==="string")o.name=d.name.slice(0,20);
+ for(const id in (d.scores||{})){const b=d.scores[id];if(b&&num(b.best)&&num(b.n)&&b.n)o.scores[id]={best:b.best,n:b.n,last:num(b.last)?b.last:b.best,date:b.date}}
+ (d.hist||[]).forEach(x=>{if(x&&typeof x.id==="string"&&num(x.sc)&&num(x.n)&&x.n&&typeof x.d==="string"&&typeof (x.t||0)==="number")o.hist.push({id:x.id,sc:x.sc,n:x.n,d:x.d.slice(0,10),t:x.t||0})});
+ for(const k in (d.lessons||{}))if(typeof d.lessons[k]==="string")o.lessons[k]=d.lessons[k];
+ (d.days||[]).forEach(x=>{if(typeof x==="string")o.days.push(x.slice(0,10))});
+ for(const k in (d.games||{})){const g=d.games[k];if(g&&num(g.best)&&num(g.plays))o.games[k]={plays:g.plays,best:g.best,bestLabel:String(g.bestLabel||g.best).slice(0,40),last:g.last}}
+ return o}
+function mini(d){return{name:d.name,scores:d.scores,lessons:d.lessons,days:d.days.slice(-120),games:d.games,hist:d.hist.slice(-150)}}
+async function makeLink(){const j=JSON.stringify(mini(S));let pre="p.",bytes=new TextEncoder().encode(j);
+ try{const cs=new CompressionStream("gzip");bytes=new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(cs)).arrayBuffer());pre="g."}catch(e){}
+ return location.origin+location.pathname.replace(/[^/]*$/,"")+"suivi.html#"+pre+b64u(bytes)}
+const SUBJ_COL=Object.fromEntries(SUBJECTS.map(m=>[m.k,m.col]));
+const subjOf=id=>{for(const k in EVALS){const t=EVALS[k].tests.find(x=>x.id===id);if(t)return t.s||EVALS[k].s||"maths"}return "maths"};
+const titleOf=id=>{for(const k in EVALS){const t=EVALS[k].tests.find(x=>x.id===id);if(t)return t.title}return id};
+const pc=(a,n)=>Math.round(100*a/n);
+const fd=s=>{try{return new Date(s+"T12:00:00").toLocaleDateString("fr-FR",{day:"numeric",month:"short"})}catch(e){return s}};
+function render(first){
+ const H=S.hist,ids=Object.keys(S.scores);
+ const nb=H.length,avg=nb?Math.round(H.reduce((a,x)=>a+pc(x.sc,x.n),0)/nb):0;
+ const wk=new Date(Date.now()-7*864e5).toISOString().slice(0,10),wkn=H.filter(x=>x.d>=wk).length;
+ const mast=ids.filter(okTest).length,tot=Object.values(EVALS).reduce((a,t)=>a+t.tests.length,0);
+ const st=streaks?streaks():{cur:0,best:0};
+ let h=`<div class="kpis"><div class="kpi"><b>${nb}</b>essais</div><div class="kpi"><b>${avg} %</b>score moyen</div><div class="kpi"><b>${mast}/${tot}</b>évaluations à 90 %+</div><div class="kpi"><b>${wkn}</b>essais ces 7 jours</div><div class="kpi"><b>${S.days.length}</b>jours d'entraînement<br><small>série : ${st.cur} · record ${st.best}</small></div></div>`;
+ /* courbe */
+ const pts=H.slice(-40);
+ if(pts.length>=2){const W=640,Ht=220,L=34,B=24,T=10,R=10,x=i=>L+(W-L-R)*i/(pts.length-1),y=v=>T+(Ht-T-B)*(1-v/100);
+  let svg=`<svg viewBox="0 0 ${W} ${Ht}" width="100%" role="img" aria-label="Évolution des scores">`;
+  [0,25,50,75,100].forEach(v=>svg+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#E2E8F0"/><text x="2" y="${y(v)+4}">${v}%</text>`);
+  svg+=`<line x1="${L}" x2="${W-R}" y1="${y(90)}" y2="${y(90)}" stroke="#16A34A" stroke-dasharray="5 4"/><text x="${W-R-60}" y="${y(90)-3}" style="fill:#15803D">objectif 90 %</text>`;
+  const bySub={};pts.forEach((p,i)=>{(bySub[subjOf(p.id)]=bySub[subjOf(p.id)]||[]).push([i,pc(p.sc,p.n)])});
+  for(const k in bySub){const c=SUBJ_COL[k];svg+=`<polyline fill="none" stroke="${c}" stroke-width="2" points="${bySub[k].map(([i,v])=>x(i)+","+y(v)).join(" ")}"/>`+bySub[k].map(([i,v])=>`<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="${c}"><title>${fd(pts[i].d)} · ${esc(titleOf(pts[i].id))} : ${pts[i].sc}/${pts[i].n}</title></circle>`).join("")}
+  svg+=`<text x="${L}" y="${Ht-6}">${fd(pts[0].d)}</text><text x="${W-R-40}" y="${Ht-6}">${fd(pts[pts.length-1].d)}</text></svg>`;
+  h+=`<div class="card" style="margin:12px 0"><h3 style="margin-top:0">Évolution des 40 derniers essais</h3>${svg}<div class="lg">${SUBJECTS.map(m=>`<span><i style="background:${m.col}"></i>${m.t}</span>`).join("")}</div></div>`}
+ else h+=`<div class="card"><p>Pas encore assez d'essais pour tracer une courbe (il en faut au moins 2).</p></div>`;
+ /* semaines */
+ const weeks=[];for(let i=7;i>=0;i--){const e=new Date(Date.now()-i*7*864e5),s=new Date(e-6*864e5);const a=s.toISOString().slice(0,10),z=e.toISOString().slice(0,10);weeks.push([z,H.filter(x=>x.d>=a&&x.d<=z).length])}
+ const mx=Math.max(1,...weeks.map(w=>w[1]));
+ h+=`<div class="card" style="margin:12px 0"><h3 style="margin-top:0">Régularité : essais par semaine</h3><div style="display:flex;gap:6px;align-items:flex-end;height:90px">${weeks.map(w=>`<div style="flex:1;text-align:center"><div style="height:${Math.max(3,w[1]/mx*70)}px;background:#4338CA;border-radius:6px 6px 0 0" title="${w[1]} essais"></div><small>${w[1]}</small></div>`).join("")}</div><p class="hint" style="margin:4px 0 0">8 dernières semaines (la dernière colonne est la semaine en cours).</p></div>`;
+ /* par matière */
+ h+=SUBJECTS.map(m=>{
+  const rows=[];for(const k of Object.keys(EVALS))for(const t of EVALS[k].tests){if((t.s||EVALS[k].s)!==m.k)continue;
+   const hh=H.filter(x=>x.id===t.id),sc=S.scores[t.id];
+   if(!sc){rows.push(`<tr><td>${t.lvl===2?"⏱️ ":""}${esc(t.title)}</td><td colspan="4" class="hint">pas encore essayé</td></tr>`);continue}
+   const f=hh.length?pc(hh[0].sc,hh[0].n):null,bst=pc(sc.best,sc.n),l=pc(sc.last,sc.n);
+   const diff=f===null?"":bst>f?`<span class="up">+${bst-f} pts ↗</span>`:bst<f?`<span class="dn">${bst-f}</span>`:"=";
+   rows.push(`<tr><td>${t.lvl===2?"⏱️ ":""}${esc(t.title)}</td><td>${hh.length||1}</td><td>${f===null?"–":f+" %"}</td><td><span class="mb"><i style="width:${bst}%;background:${bst>=90?"#16A34A":bst>=60?"#F4B400":"#E57373"}"></i></span> <b>${bst} %</b></td><td>${diff}</td></tr>`)}
+  return `<div class="card" style="margin:12px 0;border-top:12px solid ${m.col}"><h3 style="margin-top:0;color:${m.col}">${m.e} ${m.t}</h3><div style="overflow-x:auto"><table class="sv"><tr><th>Évaluation</th><th>Essais</th><th>1er essai</th><th>Meilleur</th><th>Progrès</th></tr>${rows.join("")}</table></div></div>`}).join("");
+ /* à revoir */
+ const weak=ids.filter(id=>pc(S.scores[id].best,S.scores[id].n)<60).map(id=>titleOf(id));
+ const todo=ids.length===0?"Rien à signaler : aucune évaluation n'a encore été faite.":weak.length?"À revoir avec lui : <b>"+weak.map(esc).join("</b>, <b>")+"</b> (meilleur score sous 60 %).":"Aucune évaluation sous 60 % : bravo !";
+ h+=`<div class="card" style="margin:12px 0;background:#FEF9C3"><h3 style="margin-top:0">🎯 Points d'attention</h3><p style="margin:0">${todo}</p></div>`;
+ /* jeux */
+ h+=`<div class="card" style="margin:12px 0;border-top:12px solid #0F766E"><h3 style="margin-top:0;color:#0F766E">🧠 Jeux d'attention</h3><table class="sv"><tr><th>Jeu</th><th>Parties</th><th>Record</th><th>Dernière partie</th></tr>${GAMES.map(g=>{const x=S.games[g.k];return `<tr><td>${g.e} ${g.t}</td><td>${x?x.plays:0}</td><td>${x?esc(x.bestLabel):"–"}</td><td>${x&&x.last?fd(x.last):"–"}</td></tr>`}).join("")}</table></div>`;
+ /* leçons */
+ h+=`<p class="hint">📖 Leçons lues : ${Object.keys(S.lessons).length}/${TOPICS.length}</p>`;
+ $("#out").innerHTML=h;
+}
+(async function(){
+ const hash=location.hash.slice(1);let shared=false;
+ if(hash){try{S=clean(await decode(hash));shared=true}catch(e){$("#src").innerHTML='<div class="card"><p>❌ Ce lien de suivi est illisible ou incomplet. Demande à ton enfant de le recréer depuis son carnet.</p></div>'}}
+ if(shared)$("#src").innerHTML=`<div class="card" style="background:#DCEBFF"><p style="margin:0">👀 Suivi ${S.name?"de <b>"+esc(S.name)+"</b> ":""}reçu par lien (lecture seule, instantané du moment où le lien a été créé). Ces données ne sont pas enregistrées sur cet appareil.</p></div>`;
+ else{S=load();$("#src").innerHTML=`<div class="card noprint"><p style="margin:0 0 8px">Ce suivi montre les progrès enregistrés <b>sur cet appareil</b>. Pour le voir depuis un autre appareil (par exemple ton téléphone), crée un lien et envoie-le-toi.</p><div class="row"><button class="btn green" id="lk">🔗 Créer un lien de suivi</button><button class="btn alt" onclick="window.print()">🖨️ Imprimer</button></div><p class="hint" id="lkm" role="status"></p></div>`;
+  $("#lk").onclick=async()=>{const u=await makeLink();try{await navigator.clipboard.writeText(u);$("#lkm").textContent="✅ Lien copié ! Colle-le dans un message ou un e-mail. Il contient les résultats : ne le partage qu'avec des personnes de confiance."}catch(e){$("#lkm").innerHTML="Copie ce lien : <input class='txt' style='width:100%' readonly value='"+u+"'>"}}}
+ render();
+})();
+</script>
+</body>
+</html>
