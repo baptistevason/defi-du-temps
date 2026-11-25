@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Le Défi du Temps – jours, mois, année et chiffres romains (CE2)</title>
 <meta name="description" content="Soutien scolaire CE2 : leçons et évaluations sur les jours de la semaine, les mois, les jours de l'année et les chiffres romains.">
-<link rel="stylesheet" href="css/style.css?v=20261124a">
+<link rel="stylesheet" href="css/style.css?v=20261125a">
 </head>
 <body>
 <div class="wrap">
@@ -18,11 +18,12 @@
  <div class="grid" style="margin:16px 0">
   <div class="pathcard lesson part"><div class="num">📖</div><div><h2 style="margin:0">1. La leçon</h2><p style="margin:.2em 0 .6em">Je lis, j'écoute, je m'entraîne. <b>Pas de note</b>, je peux me tromper !</p><a class="btn blue big" href="lecons.html">Aller aux leçons</a></div></div>
   <div class="pathcard eval part"><div class="num">📝</div><div><h2 style="margin:0">2. L'évaluation</h2><p style="margin:.2em 0 .6em">Je teste ce que j'ai retenu. J'ai un <b>score</b> et un <b>corrigé</b>.</p><a class="btn big" href="evaluations.html">Aller aux évaluations</a></div></div>
+  <div class="pathcard games part"><div class="num">🧠</div><div><h2 style="margin:0">3. Les jeux</h2><p style="margin:.2em 0 .6em">Memory, suites, consignes… Je m'entraîne à <b>bien me concentrer</b> en jouant.</p><a class="btn big green" href="jeux.html">Aller aux jeux</a></div></div>
  </div>
 
  <div id="mini"></div>
- <h2>Les thèmes</h2>
- <div class="grid" id="topics"></div>
+ <h2>Les matières</h2>
+ <div id="topics"></div>
 
  <div class="card" style="margin-top:18px"><h3>😄 Blague du jour</h3><p id="joke"></p><button class="btn alt" id="jk">Une autre !</button></div>
 
@@ -31,20 +32,21 @@
 </main>
 <footer>Le Défi du Temps · soutien scolaire CE2</footer>
 </div>
-<script src="js/common.js?v=20261124a"></script>
-<script src="js/evals-data.js?v=20261124a"></script>
+<script src="js/common.js?v=20261125a"></script>
+<script src="js/evals-data.js?v=20261125a"></script>
 <script>
 shell("home","Salut ! Moi, c'est Tic-Tac. On commence par la leçon ?");
 const nm=$("#nm");nm.value=S.name||"";
 function hello(){if(S.name){$("#hello").innerHTML="Bienvenue <b>"+esc(S.name)+"</b> ! Ici, on apprend le temps en s'amusant : <b>d'abord la leçon, ensuite l'évaluation.</b>";say("Salut "+S.name+" ! On commence par la leçon ?")}}
 hello();
 $("#nmb").onclick=()=>{S.name=nm.value.trim();save();hello()};
-$("#topics").innerHTML=TOPICS.map(o=>{
- const tests=EVALS[o.k].tests;const done=tests.filter(x=>S.scores[x.id]);
+function tcard(o){
+ const tests=lv1(o.k);const done=tests.filter(x=>S.scores[x.id]);
  const ok=tests.filter(x=>S.scores[x.id]&&S.scores[x.id].best/S.scores[x.id].n>=.9).length;
  return `<div class="card" style="border-top:12px solid ${o.col}"><div style="font-size:2.2rem">${o.e}</div><h3>${o.t}</h3><p class="hint" style="margin:.2em 0 .6em">${o.sub}</p>
  <p><span class="pill ${ok===tests.length?"ok":done.length?"mid":"none"}">${ok}/${tests.length} évaluations maîtrisées</span></p>
- <div class="row"><a class="btn blue" href="${o.lesson}">📖 Leçon</a><a class="btn" href="evaluations.html#${o.k}">📝 Évaluation</a></div></div>`}).join("");
+ <div class="row"><a class="btn blue" href="${o.lesson}">📖 Leçon</a><a class="btn" href="evaluations.html#${o.k}">📝 Évaluation</a></div></div>`}
+$("#topics").innerHTML=SUBJECTS.map(m=>`<div class="subj" style="border-color:${m.col}"><h3 style="color:${m.col};font-size:1.4rem">${m.e} ${m.t}</h3><div class="grid">${TOPICS.filter(o=>o.s===m.k).map(tcard).join("")}</div></div>`).join("");
 (function(){const L=levelOf(),st=streaks();$("#mini").innerHTML="<a class=\"card minip\" href=\"carnet.html\">🏅 <b>Niveau "+L.n+" · "+L.name+"</b> · ⭐ "+L.xp+" points · 🔥 "+st.cur+" jour"+(st.cur>1?"s":"")+" de suite · <u>Voir mon carnet →</u></a>"})();
 $("#joke").textContent=pick(BLAGUES);$("#jk").onclick=()=>$("#joke").textContent=pick(BLAGUES);
 </script>

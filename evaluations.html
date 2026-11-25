@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Les évaluations – Le Défi du Temps</title>
-<link rel="stylesheet" href="css/style.css?v=20261124a">
+<link rel="stylesheet" href="css/style.css?v=20261125a">
 </head>
 <body>
 <div class="wrap">
@@ -19,15 +19,23 @@
 </main>
 <footer>Le Défi du Temps · soutien scolaire CE2</footer>
 </div>
-<script src="js/common.js?v=20261124a"></script>
-<script src="js/evals-data.js?v=20261124a"></script>
+<script src="js/common.js?v=20261125a"></script>
+<script src="js/evals-data.js?v=20261125a"></script>
 <script>
 shell("evals","Prêt pour l'évaluation ? Choisis un thème !");
-const keys=["jours","mois","annee","romains","alphabet","phrases","nombres","tables","final"].filter(k=>EVALS[k]);
-$("#list").innerHTML=keys.map(k=>{const o=EVALS[k];
- return `<section id="${k}" class="card" style="margin:16px 0;border-top:12px solid ${o.col}"><h2 style="margin-top:0">${o.e} ${o.title}</h2>
- ${o.tests.map(x=>{const b=badge(S.scores[x.id]);return `<div class="row" style="justify-content:space-between;padding:8px 0;border-top:2px solid var(--line)"><div><b>${x.title}</b><br><span class="hint">${x.desc}</span><br><span class="pill ${b.c}">${b.t}</span></div><a class="btn big" href="evaluation.html?t=${k}&k=${x.id}">${S.scores[x.id]?"Refaire":"Commencer"}</a></div>`}).join("")}
- ${k!=="final"?`<p style="margin:10px 0 0"><a class="btn blue" href="${o.lesson}">📖 Revoir la leçon</a></p>`:`<p class="hint">Fais-le quand tu as réussi les autres évaluations !</p>`}</section>`}).join("");
+const SUBJ_KEYS=["jours","mois","annee","romains","alphabet","phrases","nombres","tables"];
+function testRow(k,x){const b=badge(S.scores[x.id]);const t=x.timer?`<span class="pill lv2">⏱️ Niveau 2 · ${x.timer} s</span> `:"";
+ return `<div class="row" style="justify-content:space-between;padding:8px 0;border-top:2px solid var(--line)"><div><b>${x.title}</b><br><span class="hint">${x.desc}</span><br>${t}<span class="pill ${b.c}">${b.t}</span></div><a class="btn big" href="evaluation.html?t=${k}&k=${x.id}">${S.scores[x.id]?"Refaire":"Commencer"}</a></div>`}
+function topicCard(k){const o=EVALS[k];const l1=o.tests.filter(x=>x.lvl!==2),l2=o.tests.filter(x=>x.lvl===2);
+ return `<section id="${k}" class="card" style="margin:12px 0;border-top:12px solid ${o.col}"><h3 style="margin-top:0">${o.e} ${o.title}</h3>
+ ${l2.length?'<p class="lvl">Niveau 1 · à ton rythme</p>':""}${l1.map(x=>testRow(k,x)).join("")}
+ ${l2.length?'<p class="lvl lvl2">Niveau 2 · chronométré ⏱️ <small>Fais d\'abord bien le niveau 1 !</small></p>'+l2.map(x=>testRow(k,x)).join(""):""}
+ <p style="margin:10px 0 0"><a class="btn blue" href="${o.lesson}">📖 Revoir la leçon</a></p></section>`}
+$("#list").innerHTML=`<p class="chips">${SUBJECTS.map(m=>`<a class="chip" style="background:${m.col}" href="#m-${m.k}">${m.e} ${m.t}</a>`).join("")}</p>`+SUBJECTS.map(m=>{
+ const ks=SUBJ_KEYS.filter(k=>EVALS[k]&&EVALS[k].s===m.k);
+ const fin=EVALS.final?EVALS.final.tests.filter(x=>x.s===m.k):[];
+ return `<div class="subj" id="m-${m.k}" style="border-color:${m.col}"><h2 style="color:${m.col}">${m.e} ${m.t}</h2>${ks.map(topicCard).join("")}
+ ${fin.length?`<section class="card" style="margin:12px 0;border-top:12px solid var(--final)"><h3 style="margin-top:0">🏆 Contrôle final · ${m.t}</h3>${fin.map(x=>testRow("final",x)).join("")}<p class="hint">À faire quand les autres évaluations sont réussies !</p></section>`:""}</div>`}).join("");
 </script>
 </body>
 </html>

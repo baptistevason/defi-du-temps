@@ -9,17 +9,34 @@
  const Q=test.mk();
  const A=new Array(Q.length).fill(null);   // réponses
  let n=0;
+ const TM=test.timer||0;            // secondes par réponse (niveau 2)
+ const LATE=new Array(Q.length).fill(false), TT=new Array(Q.length).fill(0);
+ let tick=null,t0=0;
+ function stopTimer(){if(tick){clearInterval(tick);tick=null}if(t0)TT[n]=Math.min(TM||99,(Date.now()-t0)/1000);t0=0}
+ function startTimer(){
+  if(!TM)return;stopTimer();t0=Date.now();
+  const fill=$("#tfill"),sec=$("#tsec");
+  const upd=()=>{const left=Math.max(0,TM-(Date.now()-t0)/1000);if(fill)fill.style.width=(left/TM*100)+"%";if(sec)sec.textContent=Math.ceil(left);if(fill)fill.className=left<=3?"low":"";return left};
+  upd();
+  tick=setInterval(()=>{if(upd()<=0){timeUp()}},100);
+ }
+ function timeUp(){
+  stopTimer();LATE[n]=true;A[n]=null;TT[n]=TM;
+  const c=$(".card");if(c)c.insertAdjacentHTML("afterbegin",'<p class="tlate">⏰ Temps écoulé ! On passe à la suite.</p>');
+  setTimeout(()=>{if(n<Q.length-1){n++;ask()}else finish()},700);
+ }
+ function go(){stopTimer();if(n<Q.length-1){n++;ask()}else finish()}
  document.title=test.title+" – Évaluation – Le Défi du Temps";
 
  function bar(){return `<div class="progress">${Q.map((_,j)=>`<i class="${j<n?"on":j===n?"cur":""}"></i>`).join("")}</div>`}
  function frame(inner,nextLabel,enabled){
   main.innerHTML=`<a class="btn alt noprint" href="evaluations.html">← Quitter</a>
   <h1 style="color:${topic.col}">${topic.e} ${esc(test.title)}</h1>
-  <p class="hint">Question ${n+1} sur ${Q.length}</p>${bar()}
+  <p class="hint">Question ${n+1} sur ${Q.length}</p>${bar()}${TM?`<div class="timer"><div id="tfill"></div><b id="tsec">${TM}</b></div>`:""}
   <div class="card">${inner}</div>
   <div class="row" style="margin-top:14px"><button class="btn big" id="next" ${enabled?"":"disabled"}>${nextLabel}</button></div>`;
-  $("#next").onclick=()=>{if(n<Q.length-1){n++;ask()}else finish()};
-  window.scrollTo(0,0);
+  $("#next").onclick=go;
+  window.scrollTo(0,0);startTimer();
  }
  function setReady(ok){const b=$("#next");if(b)b.disabled=!ok}
  const lbl=()=>n===Q.length-1?"Terminer l'évaluation 🏁":"Question suivante →";
@@ -30,7 +47,7 @@
    const ch=q.fixed?q.choices:shuffle(q.choices);
    frame(`<div class="prompt">${q.prompt}</div>${q.speak?'<div class="row"><button class="btn alt big" id="spk">🔊 Écouter</button></div>':""}<div class="choices">${ch.map((c,i)=>`<button class="choice" data-i="${i}">${esc(c)}</button>`).join("")}</div>`,lbl(),A[n]!==null);
    if(q.speak){speak(q.speak,q.lang||"en-GB");$("#spk").onclick=()=>speak(q.speak,q.lang||"en-GB")}
-   $$(".choice").forEach((b,i)=>{b.onclick=()=>{$$(".choice").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");A[n]=ch[i];setReady(true)}});
+   $$(".choice").forEach((b,i)=>{b.onclick=()=>{$$(".choice").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");A[n]=ch[i];setReady(true);if(TM)setTimeout(go,250)}});
   }else if(q.type==="compose"){
    const free=!!q.free;
    let tiles=free?q.free.map((l,i)=>({id:i,l})):shuffle(q.items.map((l,i)=>({id:i,l})));
@@ -67,19 +84,30 @@
  function finish(){
   const total=Q.length;let sc=0;const rows=Q.map((q,i)=>{const ok=isOk(i);if(ok)sc++;
    let extra="";if(!ok&&q.type==="type"&&A[i]&&strip(A[i].toLowerCase())===strip(q.answer))extra=" (presque : pense aux accents !)";
-   return `<div class="corr ${ok?"":"bad"}"><b>${i+1}. ${ok?"✅":"❌"}</b> ${q.prompt}<br>${ok?`Ta réponse : <b>${esc(shown(i))}</b>`:`Ta réponse : <b>${esc(shown(i))}</b>${extra}<br>Bonne réponse : <b>${esc(good(i))}</b>`}${!ok&&q.explain?`<br><span class="hint">${q.explain}</span>`:""}</div>`}).join("");
+   return `<div class="corr ${ok?"":"bad"}"><b>${i+1}. ${ok?"✅":"❌"}${LATE[i]?" ⏰":""}</b> ${q.prompt}<br>${ok?`Ta réponse : <b>${esc(shown(i))}</b>`:`Ta réponse : <b>${esc(shown(i))}</b>${extra}<br>Bonne réponse : <b>${esc(good(i))}</b>`}${!ok&&q.explain?`<br><span class="hint">${q.explain}</span>`:""}</div>`}).join("");
   const prev=S.scores[test.id];S=load();const bdg0=earned();
   const old=S.scores[test.id];
   S.scores[test.id]={best:Math.max(old?old.best:0,sc),n:total,last:sc,date:new Date().toISOString().slice(0,10)};save();recordAttempt(test.id,sc,total);const bdg1=earned();const newB=BADGES.filter(b=>bdg1[b[0]]&&!bdg0[b[0]]);const nb=newB.length?"<div class=\"card newb\"><h3>🎖️ "+(newB.length>1?"Nouvelles médailles":"Nouvelle médaille")+" !</h3><div class=\"bdgrow\">"+newB.map(b=>"<span class=\"bdg\"><i>"+b[1]+"</i><b>"+b[2]+"</b><small>"+b[3]+"</small></span>").join("")+"</div><p><a href=\"carnet.html\">Voir mon carnet →</a></p></div>":"";
+  const nl=LATE.filter(Boolean).length,avg=TM?(TT.reduce((a,b)=>a+b,0)/total):0;
+  const tinfo=TM?`<p class="hint">⏱️ Temps moyen : <b>${avg.toFixed(1).replace(".",",")} s</b> par réponse${nl?` · ${nl} réponse${nl>1?"s":""} trop lente${nl>1?"s":""}`:" · aucune réponse hors temps 👏"}</p>`:"";
   const r=sc/total,b=badge({best:sc,n:total});
   const msg=r>=.9?"INCROYABLE ! Tu maîtrises ce sujet !":r>=.6?"Bien joué ! Encore un petit entraînement et ce sera parfait.":"Pas de souci ! Retourne voir la leçon, puis refais l'évaluation.";
   say(r>=.9?"Bravo, champion !!! 🎉":r>=.6?"Bien joué !":"On revoit la leçon ensemble ?");if(r>=.9||newB.length)confetti();
   const again=`<a class="btn big" href="evaluation.html?t=${t}&k=${test.id}">🔁 Refaire</a>`;
   main.innerHTML=`<h1 style="color:${topic.col}">${topic.e} Résultat : ${esc(test.title)}</h1>
-  <div class="card" style="text-align:center"><div class="score">${sc} / ${total}</div><p><span class="pill ${b.c}">${b.t.split(" (")[0]}</span></p><p class="prompt">${msg}</p>
+  <div class="card" style="text-align:center"><div class="score">${sc} / ${total}</div><p><span class="pill ${b.c}">${b.t.split(" (")[0]}</span></p><p class="prompt">${msg}</p>${tinfo}
   <div class="row" style="justify-content:center">${r<.6?`<a class="btn big green" href="${topic.lesson}">📖 Revoir la leçon</a>`:""}${again}<a class="btn alt big" href="evaluations.html">📝 Autres évaluations</a>${r>=.6?`<a class="btn alt big" href="${topic.lesson}">📖 Revoir la leçon</a>`:""}</div></div>
   ${nb}<h2>📋 Le corrigé</h2>${rows}`;
   window.scrollTo(0,0);
  }
- ask();
+ function intro(){
+  main.innerHTML=`<a class="btn alt noprint" href="evaluations.html">← Quitter</a>
+  <h1 style="color:${topic.col}">${topic.e} ${esc(test.title)}</h1>
+  <div class="card" style="text-align:center"><div class="bigemo">⏱️</div>
+  <p class="prompt">Niveau 2 : tu as <b>${TM} secondes</b> par réponse.</p>
+  <p class="hint">Une barre se vide en haut. Pas de panique : si le temps est écoulé, on passe simplement à la question suivante. Respire, lis bien, et vas-y à ton rythme !</p>
+  <div class="row" style="justify-content:center"><button class="btn big" id="go">C'est parti ! 🚀</button></div></div>`;
+  $("#go").onclick=ask;
+ }
+ TM?intro():ask();
 })();

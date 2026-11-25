@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Les jeux – Le Défi du Temps</title>
+<link rel="stylesheet" href="css/style.css?v=20261125a">
+</head>
+<body>
+<div class="wrap">
+<div id="shell"></div>
+<main id="main">
+ <span class="sec">Partie 3</span>
+ <h1>🧠 Les jeux d'attention</h1>
+ <p>Ici, on s'entraîne à <b>bien regarder, bien écouter et bien suivre les consignes</b>, en jouant. Pas de note, pas de chrono : on prend son temps !</p>
+ <div class="tip"><b class="t">Conseil :</b> un jeu à la fois, 5 à 10 minutes, puis une petite pause. Mieux vaut un jeu bien fait que trois jeux pressés.</div>
+ <div class="grid" id="list"></div>
+</main>
+<footer>Le Défi du Temps · soutien scolaire CE2</footer>
+</div>
+<script src="js/common.js?v=20261125a"></script>
+<script>
+shell("jeux","Quel jeu veux-tu essayer ?");
+$("#list").innerHTML=GAMES.map(g=>{const x=(S.games||{})[g.k];return `<a class="card" style="text-decoration:none;border-top:12px solid #0F766E" href="${g.page}"><div style="font-size:2.6rem">${g.e}</div><h3>${g.t}</h3><p class="hint">${g.sub}</p><p><span class="pill ${x?"mid":"none"}">${x?x.plays+" partie"+(x.plays>1?"s":"")+" · record "+esc(x.bestLabel||String(x.best)):"Pas encore joué"}</span></p><span class="btn green">Jouer →</span></a>`}).join("");
+</script>
+</body>
+</html>

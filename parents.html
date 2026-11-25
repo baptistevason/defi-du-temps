@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Coin des parents – Le Défi du Temps</title>
-<link rel="stylesheet" href="css/style.css?v=20261124a">
+<link rel="stylesheet" href="css/style.css?v=20261125a">
 </head>
 <body>
 <div class="wrap">
@@ -35,16 +35,18 @@
   <li><b>Si l'écriture ou la lecture reste très pénible après 2 à 3 semaines</b> malgré ces séances, parlez-en à son enseignant(e) : il ou elle saura mieux cibler le besoin.</li></ul></div>
 
  <div class="card" style="margin-top:14px"><h3>Programme CE2 visé</h3><p>Écrire correctement les jours et les mois (orthographe, accents) ; savoir qu'une année compte 12 mois, 52 semaines et 365 jours (366 si bissextile) ; connaître les mois de 30 et 31 jours ; lire et écrire les chiffres romains simples (I, V, X, jusqu'à XX) ; en anglais, connaître l'alphabet (26 lettres, prononciation) les phrases de base (saluer, être poli, se présenter), les nombres jusqu'à 20 et les couleurs ; en maths, comprendre la multiplication comme une addition répétée et mémoriser progressivement les tables de 2 à 9.</p></div>
+ <div class="card" style="margin-top:14px"><h3>🧠 Jeux d'attention : mode d'emploi</h3><p>Les cinq jeux travaillent la mémoire visuelle, la mémoire de travail, la lecture attentive des consignes et la concentration. Ils sont pensés pour de <b>courtes séances (5 à 10 minutes)</b> : une seule tâche à la fois, pas de chrono visible, pas d'écran d'échec.</p><ul><li>Proposer un jeu par séance, à heure régulière, dans un endroit calme et sans écran concurrent.</li><li>Féliciter l'effort et la stratégie (« tu as bien regardé avant de jouer ») plutôt que le seul résultat.</li><li>Dans « Le chef a dit », lire la consigne ensemble une première fois, puis laisser faire seul.</li><li>Arrêter sur une réussite, avant la fatigue. Faire une pause de 5 minutes entre deux activités.</li><li>Les niveaux montent seulement quand l'enfant réussit ; les records sont dans <a href="carnet.html">son carnet</a>.</li></ul><table id="gtab"></table></div>
  <p class="noprint" style="margin-top:14px"><button class="btn alt" id="rz">Remettre la progression à zéro</button></p>
 </main>
 <footer>Le Défi du Temps · soutien scolaire CE2</footer>
 </div>
-<script src="js/common.js?v=20261124a"></script>
-<script src="js/evals-data.js?v=20261124a"></script>
+<script src="js/common.js?v=20261125a"></script>
+<script src="js/evals-data.js?v=20261125a"></script>
 <script>
 shell("parents","Coin des parents : progression, plan et conseils.");
+$("#gtab").innerHTML="<tr><th>Jeu</th><th>Ce qu'il travaille</th><th>Parties</th><th>Record</th></tr>"+GAMES.map(g=>{const x=(load().games||{})[g.k];return `<tr><td>${g.e} ${g.t}</td><td>${g.trains}</td><td>${x?x.plays:0}</td><td>${x?esc(x.bestLabel||String(x.best)):"–"}</td></tr>`}).join("");
 function prog(){S=load();let h="<table><tr><th>Thème</th><th>Évaluation</th><th>Meilleur score</th></tr>";
- for(const k of ["jours","mois","annee","romains","alphabet","phrases","nombres","tables","final"]){for(const x of EVALS[k].tests){const b=badge(S.scores[x.id]);h+=`<tr><td>${EVALS[k].e} ${EVALS[k].title}</td><td>${x.title}</td><td><span class="pill ${b.c}">${b.t}</span></td></tr>`}}
+ for(const m of SUBJECTS){for(const k of ["jours","mois","annee","romains","alphabet","phrases","nombres","tables","final"]){for(const x of EVALS[k].tests){if((EVALS[k].s||x.s)!==m.k)continue;const b=badge(S.scores[x.id]);h+=`<tr><td>${m.e} ${m.t} · ${EVALS[k].e} ${k==="final"?"Contrôle final":EVALS[k].title}</td><td>${x.title}</td><td><span class="pill ${b.c}">${b.t}</span></td></tr>`}}}
  $("#prog").innerHTML=h+"</table><p class='hint'>Les scores sont enregistrés dans le navigateur de cet appareil. <a href='carnet.html'>Voir le carnet de progression et faire une sauvegarde →</a></p>"}
 prog();
 const PLAN=[["Semaine 1","Jours & mois",[
@@ -81,10 +83,17 @@ const PLAN=[["Semaine 1","Jours & mois",[
  ["s5me","Mercredi","📝 « Les tables de 6, 7, 8 et 9 »"],
  ["s5j","Jeudi","📝 « Choisis le bon résultat » et « Calcul à trous »"],
  ["s5v","Vendredi","📝 « Ordre et suites », « Petits problèmes » puis 🏆 le contrôle final Maths"],
- ["s5w","Week-end","🎲 Jeu en famille : « Je dis une multiplication, tu réponds vite ! »"]]]];
+ ["s5w","Week-end","🎲 Jeu en famille : « Je dis une multiplication, tu réponds vite ! »"]]],
+ ["Semaine 6","Maths niveau 2 et jeux d'attention",[
+ ["s6l","Lundi","⏱️ Maths niveau 2 : « Tables de 2, 3, 4 et 5 » (10 s par réponse)"],
+ ["s6m","Mardi","🃏 Un memory (6 paires) + 🔴 la suite de couleurs"],
+ ["s6me","Mercredi","⏱️ Maths niveau 2 : « Tables de 6, 7, 8 et 9 »"],
+ ["s6j","Jeudi","📋 « Le chef a dit » + 🔍 « La grande chasse »"],
+ ["s6v","Vendredi","⏱️ Niveau 2 « Éclair » puis 🔢 « Les nombres secrets »"],
+ ["s6w","Week-end","🎲 Jeu en famille : memory avec de vraies cartes, ou « Jacques a dit »"]]]];
 $("#plan").innerHTML=PLAN.map(([a,b,rows])=>`<div class="card" style="margin-top:12px"><h3>${a} – <span style="color:var(--romains)">${b}</span></h3>${rows.map(([id,d,t])=>`<label class="check"><input type="checkbox" data-id="${id}" ${S.plan[id]?"checked":""}><span><b>${d}</b> – ${t}</span></label>`).join("")}</div>`).join("");
 $$("#plan input").forEach(c=>c.onchange=()=>{S=load();S.plan[c.dataset.id]=c.checked;save()});
-$("#rz").onclick=()=>{if(confirm("Effacer toute la progression ?")){S=load();S.scores={};S.plan={};S.hist=[];S.lessons={};S.days=[];save();location.reload()}};
+$("#rz").onclick=()=>{if(confirm("Effacer toute la progression ?")){S=load();S.scores={};S.plan={};S.hist=[];S.lessons={};S.days=[];S.games={};save();location.reload()}};
 </script>
 </body>
 </html>

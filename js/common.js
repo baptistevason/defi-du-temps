@@ -4,15 +4,26 @@ const MOIS=["janvier","février","mars","avril","mai","juin","juillet","août","
 const NBJ=[31,28,31,30,31,30,31,31,30,31,30,31];
 const ORD=["premier","deuxième","troisième","quatrième","cinquième","sixième","septième","huitième","neuvième","dixième","onzième","douzième"];
 const TOPICS=[
- {k:"jours",t:"Les jours de la semaine",e:"📅",col:"var(--jours)",sub:"7 jours à connaître et à écrire",lesson:"lecon-jours.html"},
- {k:"mois",t:"Les mois de l'année",e:"🗓️",col:"var(--mois)",sub:"12 mois à connaître et à écrire",lesson:"lecon-mois.html"},
- {k:"annee",t:"Les jours de l'année",e:"🎂",col:"var(--annee)",sub:"365 jours, mois de 30 ou 31 jours",lesson:"lecon-annee.html"},
- {k:"romains",t:"Les chiffres romains",e:"🏛️",col:"var(--romains)",sub:"I, V, X… comme les Romains !",lesson:"lecon-romains.html"},
- {k:"alphabet",t:"English : the alphabet",e:"🔤",col:"var(--alphabet)",sub:"Les 26 lettres en anglais",lesson:"lecon-alphabet.html"},
- {k:"phrases",t:"English : basic phrases",e:"💬",col:"var(--phrases)",sub:"Dire bonjour, se présenter, être poli",lesson:"lecon-phrases.html"},
- {k:"nombres",t:"English : numbers & colours",e:"🔢",col:"var(--nombres)",sub:"Compter jusqu'à 20 et dire les couleurs",lesson:"lecon-nombres.html"},
- {k:"tables",t:"Maths : les tables de multiplication",e:"✖️",col:"var(--tables)",sub:"Apprendre les tables de 2 à 9 et les retenir",lesson:"lecon-tables.html"}
+ {k:"jours",s:"francais",t:"Les jours de la semaine",e:"📅",col:"var(--jours)",sub:"7 jours à connaître et à écrire",lesson:"lecon-jours.html"},
+ {k:"mois",s:"francais",t:"Les mois de l'année",e:"🗓️",col:"var(--mois)",sub:"12 mois à connaître et à écrire",lesson:"lecon-mois.html"},
+ {k:"annee",s:"maths",t:"Les jours de l'année",e:"🎂",col:"var(--annee)",sub:"365 jours, mois de 30 ou 31 jours",lesson:"lecon-annee.html"},
+ {k:"romains",s:"maths",t:"Les chiffres romains",e:"🏛️",col:"var(--romains)",sub:"I, V, X… comme les Romains !",lesson:"lecon-romains.html"},
+ {k:"alphabet",s:"anglais",t:"English : the alphabet",e:"🔤",col:"var(--alphabet)",sub:"Les 26 lettres en anglais",lesson:"lecon-alphabet.html"},
+ {k:"phrases",s:"anglais",t:"English : basic phrases",e:"💬",col:"var(--phrases)",sub:"Dire bonjour, se présenter, être poli",lesson:"lecon-phrases.html"},
+ {k:"nombres",s:"anglais",t:"English : numbers & colours",e:"🔢",col:"var(--nombres)",sub:"Compter jusqu'à 20 et dire les couleurs",lesson:"lecon-nombres.html"},
+ {k:"tables",s:"maths",t:"Maths : les tables de multiplication",e:"✖️",col:"var(--tables)",sub:"Apprendre les tables de 2 à 9 et les retenir",lesson:"lecon-tables.html"}
 ];
+const SUBJECTS=[
+ {k:"francais",t:"Français",e:"✍️",col:"#C2410C",sub:"Bien écrire les jours et les mois"},
+ {k:"maths",t:"Maths",e:"🔢",col:"#4338CA",sub:"Calendrier, chiffres romains, tables de multiplication"},
+ {k:"anglais",t:"English",e:"🇬🇧",col:"#0E7490",sub:"Alphabet, phrases, nombres et couleurs"}];
+const GAMES=[
+ {k:"memory",t:"Memory",e:"🃏",page:"jeu-memory.html",sub:"Retrouve les paires de cartes",trains:"Mémoire visuelle · attention",unit:"paires"},
+ {k:"suite",t:"La suite de couleurs",e:"🔴",page:"jeu-suite.html",sub:"Regarde, retiens, rejoue dans le même ordre",trains:"Mémoire de travail · concentration",unit:"couleurs"},
+ {k:"consignes",t:"Le chef a dit",e:"📋",page:"jeu-consignes.html",sub:"Lis la consigne et fais exactement ce qui est demandé",trains:"Respect des consignes · lecture attentive",unit:"niveau"},
+ {k:"chasse",t:"La grande chasse",e:"🔍",page:"jeu-chasse.html",sub:"Trouve tous les intrus cachés dans la grille",trains:"Attention sélective · patience",unit:"niveau"},
+ {k:"nombres",t:"Les nombres secrets",e:"🔢",page:"jeu-nombres.html",sub:"Retiens les chiffres et redis-les",trains:"Mémoire des nombres · écoute",unit:"chiffres"}];
+function recordGame(k,score,label,extra){S=load();const g=S.games[k]||{plays:0,best:0};g.plays++;if(score>g.best){g.best=score;g.bestLabel=label||String(score)}g.last=today();if(extra)g.extra=Object.assign(g.extra||{},extra);S.games[k]=g;markDay();save()}
 const BLAGUES=[
  "Pourquoi le calendrier est stressé ? Parce que ses jours sont comptés !",
  "Quel est le mois le plus fatigant ? Mars… il faut toujours marcher !",
@@ -38,7 +49,7 @@ function confetti(){let c=$("#confetti");if(!c){c=document.createElement("div");
 
 /* Sauvegarde locale (facultative) */
 const KEY="defi-temps-v2";
-function load(){const d={name:"",scores:{},plan:{},hist:[],lessons:{},days:[]};try{return Object.assign(d,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){return d}}
+function load(){const d={name:"",scores:{},plan:{},hist:[],lessons:{},days:[],games:{}};try{return Object.assign(d,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){return d}}
 let S=load();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function badge(sc){ // sc = {best,n}
@@ -51,7 +62,7 @@ function badge(sc){ // sc = {best,n}
 
 /* En-tête commun */
 function shell(active,msg){try{var m=location.pathname.match(/lecon-([a-z]+)\.html/);if(active==="lecons"&&m)recordLesson(m[1])}catch(e){}
- const nav=[["index.html","home","🏠 Accueil"],["lecons.html","lecons","📖 Leçons"],["evaluations.html","evals","📝 Évaluations"],["fiches.html","fiches","✏️ Fiches"],["carnet.html","carnet","🏅 Mon carnet"],["parents.html","parents","👨‍👩‍👦 Parents"]];
+ const nav=[["index.html","home","🏠 Accueil"],["lecons.html","lecons","📖 Leçons"],["evaluations.html","evals","📝 Évaluations"],["jeux.html","jeux","🧠 Jeux"],["fiches.html","fiches","✏️ Fiches"],["carnet.html","carnet","🏅 Mon carnet"],["parents.html","parents","👨‍👩‍👦 Parents"]];
  $("#shell").innerHTML=`<header>
   <svg id="mascot" viewBox="0 0 100 100" aria-hidden="true">
    <circle cx="24" cy="16" r="11" fill="#E63946" stroke="#1F2937" stroke-width="4"/><circle cx="76" cy="16" r="11" fill="#E63946" stroke="#1F2937" stroke-width="4"/>
@@ -112,10 +123,12 @@ function recordAttempt(id,sc,n){S=load();S.hist.push({id:id,sc:sc,n:n,d:today(),
 function recordLesson(k){S=load();if(!S.lessons[k])S.lessons[k]=today();markDay();save()}
 function streaks(){const ds=S.days.slice().sort();const day=s=>Math.round(Date.parse(s+"T12:00:00Z")/864e5);let best=0,run=0,prev=null;ds.forEach(s=>{const d=day(s);if(d===prev)return;run=(prev!==null&&d===prev+1)?run+1:1;prev=d;if(run>best)best=run});const cur=(prev!==null&&day(today())-prev<=1)?run:0;return {cur:cur,best:best}}
 const LEVELS=["Apprenti du temps","Petit explorateur","Explorateur","Aventurier","Super élève","Maître du temps","Champion","Légende"];
-function levelOf(){let x=0;for(const k in S.lessons)x+=20;for(const id in S.scores)x+=S.scores[id].best*10;x+=S.hist.length*5;const l=Math.min(Math.floor(x/150),LEVELS.length-1);return {xp:x,n:l+1,name:LEVELS[l],from:l*150,next:l>=LEVELS.length-1?null:(l+1)*150}}
+function levelOf(){let x=0;for(const k in S.lessons)x+=20;for(const id in S.scores)x+=S.scores[id].best*10;x+=S.hist.length*5;for(const g in (S.games||{}))x+=Math.min(S.games[g].plays,20)*4;const l=Math.min(Math.floor(x/150),LEVELS.length-1);return {xp:x,n:l+1,name:LEVELS[l],from:l*150,next:l>=LEVELS.length-1?null:(l+1)*150}}
 function okTest(id){const c=S.scores[id];return !!c&&c.best/c.n>=.9}
-function topicPct(k){const t=EVALS[k].tests;let s=0;t.forEach(x=>{const c=S.scores[x.id];if(c)s+=c.best/c.n});return Math.round(100*s/t.length)}
-function topicMastered(k){return EVALS[k].tests.every(x=>okTest(x.id))}
+function lv1(k){return EVALS[k].tests.filter(x=>x.lvl!==2)}
+function lv2(k){return EVALS[k].tests.filter(x=>x.lvl===2)}
+function topicPct(k){const t=lv1(k);let s=0;t.forEach(x=>{const c=S.scores[x.id];if(c)s+=c.best/c.n});return Math.round(100*s/t.length)}
+function topicMastered(k){return lv1(k).every(x=>okTest(x.id))}
 function improved(){return Object.keys(S.scores).some(id=>{const h=S.hist.filter(x=>x.id===id);return h.length>1&&Math.max.apply(null,h.map(x=>x.sc))>h[0].sc})}
 const BADGES=[
 ["pas","👣","Premier pas","Faire sa première évaluation",()=>S.hist.length>=1],
@@ -135,5 +148,13 @@ const BADGES=[
 ["prog","📈","En progrès","Améliorer son score après un premier essai",()=>improved()],
 ["dix","🎯","10 évaluations","Faire 10 évaluations",()=>S.hist.length>=10],
 ["s3","🔥","3 jours de suite","S'entraîner 3 jours d'affilée",()=>streaks().best>=3],
-["s7","🌋","7 jours de suite","S'entraîner 7 jours d'affilée",()=>streaks().best>=7]];
+["s7","🌋","7 jours de suite","S'entraîner 7 jours d'affilée",()=>streaks().best>=7],
+["eclair","⚡","Éclair","Réussir (90 %) une évaluation chronométrée de niveau 2",()=>Object.keys(EVALS).some(k=>lv2(k).some(x=>okTest(x.id)))],
+["foudre","🌩️","Foudre","Réussir toutes les évaluations de niveau 2 des tables",()=>EVALS.tables&&lv2("tables").length>0&&lv2("tables").every(x=>okTest(x.id))],
+["memo","🐘","Mémoire d'éléphant","Réussir le memory difficile (16 cartes)",()=>((S.games||{}).memory||{best:0}).best>=8],
+["simon","🎨","Suite parfaite","Rejouer une suite de 6 couleurs",()=>((S.games||{}).suite||{best:0}).best>=6],
+["chef","📋","Super consigne","Réussir le niveau 3 du chef a dit",()=>((S.games||{}).consignes||{best:0}).best>=3],
+["chas","🔍","Œil de lynx","Réussir le niveau 3 de la grande chasse",()=>((S.games||{}).chasse||{best:0}).best>=3],
+["nbs","🧮","Nombres secrets","Retenir 6 chiffres d'affilée",()=>((S.games||{}).nombres||{best:0}).best>=6],
+["joueur","🎮","Joueur complet","Essayer les 5 jeux d'attention",()=>GAMES.every(g=>((S.games||{})[g.k]||{plays:0}).plays>0)]];
 function earned(){const o={};BADGES.forEach(b=>{try{if(b[4]())o[b[0]]=1}catch(e){}});return o}

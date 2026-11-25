@@ -111,7 +111,7 @@ const tablesOrdre=()=>[pool("Range les résultats de la table de 3, du plus peti
  {type:"type",silent:true,numeric:true,prompt:"Complète la suite de la table de 8 : 8, 16, 24, ?",answer:"32",explain:"24 + 8 = 32."}];
 
 const EVALS={
- jours:{title:"Les jours de la semaine",e:"📅",col:"var(--jours)",lesson:"lecon-jours.html",tests:[
+ jours:{s:"francais",title:"Les jours de la semaine",e:"📅",col:"var(--jours)",lesson:"lecon-jours.html",tests:[
   {id:"jours-quiz",title:"Quiz : avant, après, entre",desc:"10 questions",mk:()=>genJours(10)},
   {id:"jours-ordre",title:"Remets dans l'ordre",desc:"5 exercices d'ordre et de lettres",mk:()=>[
     pool("Range les 7 jours, du lundi au dimanche :",JOURS),
@@ -120,7 +120,7 @@ const EVALS={
     letters("Remets les lettres dans l'ordre pour écrire le jour :","mercredi"),
     letters("Remets les lettres dans l'ordre pour écrire le jour :","vendredi")]},
   {id:"jours-ecriture",title:"Écris les jours",desc:"7 mots à écrire sans modèle",mk:()=>shuffle(JOURS).map(w=>typed("Écris le jour que tu entends (clique sur 🔊) :",w))}]},
- mois:{title:"Les mois de l'année",e:"🗓️",col:"var(--mois)",lesson:"lecon-mois.html",tests:[
+ mois:{s:"francais",title:"Les mois de l'année",e:"🗓️",col:"var(--mois)",lesson:"lecon-mois.html",tests:[
   {id:"mois-quiz",title:"Quiz : avant, après, entre",desc:"10 questions",mk:()=>genMois(10)},
   {id:"mois-ordre",title:"Remets dans l'ordre",desc:"5 exercices d'ordre et de lettres",mk:()=>[
     pool("Range les 6 premiers mois :",MOIS.slice(0,6)),
@@ -129,38 +129,42 @@ const EVALS={
     letters("Remets les lettres dans l'ordre pour écrire le mois :","septembre"),
     letters("Remets les lettres dans l'ordre pour écrire le mois :","décembre")]},
   {id:"mois-ecriture",title:"Écris les mois",desc:"12 mots à écrire (attention aux accents)",mk:()=>shuffle(MOIS).map(w=>typed("Écris le mois que tu entends (clique sur 🔊) :",w))}]},
- annee:{title:"Les jours de l'année",e:"🎂",col:"var(--annee)",lesson:"lecon-annee.html",tests:[
+ annee:{s:"maths",title:"Les jours de l'année",e:"🎂",col:"var(--annee)",lesson:"lecon-annee.html",tests:[
   {id:"annee-mois",title:"31, 30 ou 28 jours ?",desc:"12 mois à classer",mk:()=>joursMois(12)},
   {id:"annee-quiz",title:"Le quiz de l'année",desc:"10 questions : semaines, bissextile…",mk:()=>qaQ(10)}]},
- romains:{title:"Les chiffres romains",e:"🏛️",col:"var(--romains)",lesson:"lecon-romains.html",tests:[
+ romains:{s:"maths",title:"Les chiffres romains",e:"🏛️",col:"var(--romains)",lesson:"lecon-romains.html",tests:[
   {id:"romains-lire",title:"Je lis les chiffres romains",desc:"10 questions",mk:()=>lire(10)},
   {id:"romains-ecrire",title:"J'écris en chiffres romains",desc:"10 questions",mk:()=>ecrireR(10)},
   {id:"romains-construire",title:"Je construis des nombres",desc:"6 exercices avec I, V, X",mk:()=>construire(6)},
   {id:"romains-vie",title:"Dans la vraie vie",desc:"6 questions : horloges, rois, siècles",mk:()=>qrQ(6)}]},
- alphabet:{title:"English : the alphabet",e:"🔤",col:"var(--alphabet)",lesson:"lecon-alphabet.html",tests:[
+ alphabet:{s:"anglais",title:"English : the alphabet",e:"🔤",col:"var(--alphabet)",lesson:"lecon-alphabet.html",tests:[
   {id:"alphabet-quiz",title:"Quiz de l'alphabet",desc:"10 questions : avant, après, premières lettres",mk:()=>alphaQuiz(10)},
   {id:"alphabet-ecoute",title:"J'écoute les lettres",desc:"10 lettres à reconnaître en écoutant",mk:()=>alphaEcoute(10)},
   {id:"alphabet-ordre",title:"Ordre et mots",desc:"6 exercices : ranger les lettres, écrire des mots",mk:()=>alphaOrdre()}]},
- phrases:{title:"English : basic phrases",e:"💬",col:"var(--phrases)",lesson:"lecon-phrases.html",tests:[
+ phrases:{s:"anglais",title:"English : basic phrases",e:"💬",col:"var(--phrases)",lesson:"lecon-phrases.html",tests:[
   {id:"phrases-quiz",title:"Français ↔ English",desc:"10 questions de traduction",mk:()=>phQuiz(10)},
   {id:"phrases-ecoute",title:"J'écoute les phrases",desc:"8 phrases à comprendre en écoutant",mk:()=>phEcoute(8)},
   {id:"phrases-ordre",title:"Je construis des phrases",desc:"6 phrases à remettre en ordre",mk:()=>phOrdre(6)},
   {id:"phrases-dialogue",title:"Que répondre ?",desc:"8 petites situations",mk:()=>phDialogue(8)}]},
- nombres:{title:"English : numbers & colours",e:"🔢",col:"var(--nombres)",lesson:"lecon-nombres.html",tests:[
+ nombres:{s:"anglais",title:"English : numbers & colours",e:"🔢",col:"var(--nombres)",lesson:"lecon-nombres.html",tests:[
   {id:"nombres-quiz",title:"Les nombres : quiz",desc:"10 questions de 1 à 20",mk:()=>numQuiz(10)},
   {id:"nombres-ecoute",title:"J'écoute les nombres",desc:"10 nombres à reconnaître en écoutant",mk:()=>numEcoute(10)},
   {id:"couleurs-quiz",title:"Les couleurs : quiz",desc:"10 questions avec des carrés de couleur",mk:()=>colQuiz(10)},
   {id:"couleurs-ecoute",title:"J'écoute les couleurs",desc:"8 couleurs à reconnaître en écoutant",mk:()=>colEcoute(8)},
   {id:"nombres-ordre",title:"Ordre et mots",desc:"6 exercices : ranger les nombres, écrire des mots",mk:()=>nbOrdre()}]},
- tables:{title:"Maths : les tables de multiplication",e:"✖️",col:"var(--tables)",lesson:"lecon-tables.html",tests:[
+ tables:{s:"maths",title:"Maths : les tables de multiplication",e:"✖️",col:"var(--tables)",lesson:"lecon-tables.html",tests:[
   {id:"tables-2-5",title:"Les tables de 2, 3, 4 et 5",desc:"10 calculs à écrire",mk:()=>mulType([2,3,4,5],10)},
   {id:"tables-6-9",title:"Les tables de 6, 7, 8 et 9",desc:"10 calculs à écrire",mk:()=>mulType([6,7,8,9],10)},
   {id:"tables-qcm",title:"Choisis le bon résultat",desc:"10 questions, toutes les tables",mk:()=>mulChoix([2,3,4,5,6,7,8,9],10)},
   {id:"tables-trous",title:"Calcul à trous",desc:"8 calculs : trouve le nombre qui manque",mk:()=>mulTrous([2,3,4,5,6,7,8,9],8)},
   {id:"tables-ordre",title:"Ordre et suites",desc:"6 exercices : ranger et continuer les tables",mk:()=>tablesOrdre()},
-  {id:"tables-problemes",title:"Petits problèmes",desc:"6 problèmes de la vie de tous les jours",mk:()=>problemes(6)}]},
+  {id:"tables-problemes",title:"Petits problèmes",desc:"6 problèmes de la vie de tous les jours",mk:()=>problemes(6)},
+  {id:"tables-n2-2-5",lvl:2,timer:10,title:"Niveau 2 · Tables de 2, 3, 4 et 5",desc:"10 calculs, 10 secondes par réponse",mk:()=>mulType([2,3,4,5],10)},
+  {id:"tables-n2-6-9",lvl:2,timer:10,title:"Niveau 2 · Tables de 6, 7, 8 et 9",desc:"10 calculs, 10 secondes par réponse",mk:()=>mulType([6,7,8,9],10)},
+  {id:"tables-n2-qcm",lvl:2,timer:10,title:"Niveau 2 · Choisis vite le bon résultat",desc:"10 questions, 10 secondes chacune",mk:()=>mulChoix([2,3,4,5,6,7,8,9],10)},
+  {id:"tables-n2-eclair",lvl:2,timer:10,title:"Niveau 2 · Éclair : toutes les tables",desc:"15 calculs et trous, 10 secondes chacun",mk:()=>[...mulType([2,3,4,5,6,7,8,9],9),...mulTrous([2,3,4,5,6,7,8,9],6)]}]},
  final:{title:"Le contrôle final",e:"🏆",col:"var(--final)",lesson:"lecons.html",tests:[
-  {id:"final",title:"Contrôle final (tout mélangé)",desc:"20 questions : jours, mois, année, chiffres romains",mk:()=>[...genJours(5),...genMois(5),...qaQ(5),...lire(3),...ecrireR(2)]},
-  {id:"final-english",title:"Contrôle final English (tout mélangé)",desc:"15 questions : alphabet, phrases, nombres, couleurs",mk:()=>[...alphaQuiz(3),...alphaEcoute(2),...phQuiz(3),...phEcoute(2),...phDialogue(2),...numQuiz(2),...colQuiz(1)]},
-  {id:"final-maths",title:"Contrôle final Maths (tout mélangé)",desc:"15 questions : les tables de multiplication",mk:()=>[...mulType([2,3,4,5],4),...mulType([6,7,8,9],4),...mulChoix([2,3,4,5,6,7,8,9],3),...mulTrous([2,3,4,5,6,7,8,9],2),...problemes(2)]}]}
+  {id:"final",s:"francais",title:"Contrôle final (tout mélangé)",desc:"20 questions : jours, mois, année, chiffres romains",mk:()=>[...genJours(5),...genMois(5),...qaQ(5),...lire(3),...ecrireR(2)]},
+  {id:"final-english",s:"anglais",title:"Contrôle final English (tout mélangé)",desc:"15 questions : alphabet, phrases, nombres, couleurs",mk:()=>[...alphaQuiz(3),...alphaEcoute(2),...phQuiz(3),...phEcoute(2),...phDialogue(2),...numQuiz(2),...colQuiz(1)]},
+  {id:"final-maths",s:"maths",title:"Contrôle final Maths (tout mélangé)",desc:"15 questions : les tables de multiplication",mk:()=>[...mulType([2,3,4,5],4),...mulType([6,7,8,9],4),...mulChoix([2,3,4,5,6,7,8,9],3),...mulTrous([2,3,4,5,6,7,8,9],2),...problemes(2)]}]}
 };

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Mon carnet de champion – Le Défi du Temps</title>
-<link rel="stylesheet" href="css/style.css?v=20261124a">
+<link rel="stylesheet" href="css/style.css?v=20261125a">
 </head>
 <body>
 <div class="wrap">
@@ -39,8 +39,8 @@
 </main>
 <footer>Le Défi du Temps · soutien scolaire CE2</footer>
 </div>
-<script src="js/common.js?v=20261124a"></script>
-<script src="js/evals-data.js?v=20261124a"></script>
+<script src="js/common.js?v=20261125a"></script>
+<script src="js/evals-data.js?v=20261125a"></script>
 <script>
 shell("carnet","Regarde tout ce que tu as accompli !");
 var KEYS=["jours","mois","annee","romains","alphabet","phrases","nombres","tables","final"];
@@ -56,9 +56,15 @@ function render(){
  $("#hero").innerHTML="<div class='card'><div class='lvlbox'><div class='lvlnum'><small>Niveau</small><span>"+L.n+"</span></div><div style='flex:1;min-width:200px'><h2 style='margin:0'>"+(S.name?esc(S.name)+", ":"")+L.name+"</h2><p style='margin:.2em 0 .5em'>⭐ <b>"+L.xp+" points</b>"+(L.next?" · encore "+(L.next-L.xp)+" pour le niveau suivant":" · niveau maximum atteint !")+"</p><div class='bar' role='progressbar' aria-valuenow='"+pct+"' aria-valuemin='0' aria-valuemax='100'><i style='width:"+pct+"%'></i></div></div></div>"
   +"<div class='stats'><div class='stat'><b>🔥 "+st.cur+"</b>jour"+(st.cur>1?"s":"")+" de suite<br><small>record : "+st.best+"</small></div><div class='stat'><b>📖 "+lessons+"/8</b>leçons lues</div><div class='stat'><b>📝 "+S.hist.length+"</b>évaluations faites<br><small>"+week+" cette semaine</small></div><div class='stat'><b>🌟 "+mast+"/8</b>thèmes maîtrisés</div><div class='stat'><b>🎖️ "+nE+"/"+BADGES.length+"</b>médailles</div></div></div>";
  $("#badges").innerHTML=BADGES.map(function(b){var on=E[b[0]];return "<div class='bdg"+(on?"":" off")+"'><i>"+(on?b[1]:"❓")+"</i><b>"+b[2]+"</b><small>"+b[3]+"</small></div>"}).join("");
- $("#topics").innerHTML=KEYS.map(function(k){var p=topicPct(k),T=EVALS[k],done=T.tests.filter(function(x){return S.scores[x.id]}).length,lk=TOPICS.filter(function(o){return o.k===k})[0];
+ function tcardC(k){var p=topicPct(k),T=EVALS[k],t1=lv1(k),t2=lv2(k),done=t1.filter(function(x){return S.scores[x.id]}).length,lk=TOPICS.filter(function(o){return o.k===k})[0];
   var read=lk?(S.lessons[k]?"✅ leçon lue":"⬜ leçon à lire"):"";
-  return "<div class='card' style='margin-bottom:10px'><div style='display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap'><b>"+T.e+" "+T.title+"</b><span class='hint'>"+read+" · "+done+"/"+T.tests.length+" évaluations faites</span></div><div class='bar' style='margin-top:6px'><i style='width:"+p+"%;background:"+(p>=90?"var(--ok)":p>=60?"#F4B400":"#E57373")+"'></i></div><small>"+p+" %"+(topicMastered(k)?" · 🌟 Maîtrisé !":"")+"</small></div>"}).join("");
+  var n2=t2.filter(function(x){return okTest(x.id)}).length;
+  var l2=t2.length?"<small>⏱️ Niveau 2 (chrono) : "+n2+"/"+t2.length+" réussies"+(n2===t2.length?" ⚡":"")+"</small><br>":"";
+  return "<div class='card' style='margin-bottom:10px'><div style='display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap'><b>"+T.e+" "+T.title+"</b><span class='hint'>"+read+" · "+done+"/"+t1.length+" évaluations faites</span></div><div class='bar' style='margin-top:6px'><i style='width:"+p+"%;background:"+(p>=90?"var(--ok)":p>=60?"#F4B400":"#E57373")+"'></i></div><small>"+p+" %"+(topicMastered(k)?" · 🌟 Maîtrisé !":"")+"</small><br>"+l2+"</div>"}
+ var gm=S.games||{};
+ $("#topics").innerHTML=SUBJECTS.map(function(m){var ks=KEYS.filter(function(k){return k!=="final"&&EVALS[k].s===m.k});
+  return "<h3 style='color:"+m.col+";margin:18px 0 6px'>"+m.e+" "+m.t+"</h3>"+ks.map(tcardC).join("")}).join("")
+  +"<h3 style='color:#0F766E;margin:18px 0 6px'>🧠 Mes jeux d'attention</h3><div class='card'>"+GAMES.map(function(g){var x=gm[g.k];return "<div style='display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:6px 0;border-bottom:2px solid var(--line)'><b>"+g.e+" "+g.t+"</b><span class='hint'>"+(x?x.plays+" partie"+(x.plays>1?"s":"")+" · record : <b>"+esc(x.bestLabel||String(x.best))+"</b>":"pas encore essayé")+"</span></div>"}).join("")+"<p style='margin:10px 0 0'><a class='btn green' href='jeux.html'>🧠 Jouer</a></p></div>";
  var ids=Object.keys(S.scores),imp=[];
  ids.forEach(function(id){var h=S.hist.filter(function(x){return x.id===id});if(h.length>1){var f=h[0],b=Math.max.apply(null,h.map(function(x){return x.sc}));if(b>f.sc)imp.push("<li><b>"+testTitle(id)+"</b> : "+f.sc+"/"+f.n+" au 1er essai → <b>"+b+"/"+f.n+"</b> maintenant (+"+(b-f.sc)+") 📈</li>")}});
  var last=S.hist.slice(-20);
@@ -96,6 +102,7 @@ $("#im").onchange=function(ev){
    (d.hist||[]).forEach(function(x){if(x&&typeof x.id==="string"&&num(x.sc)&&num(x.n)&&dstr(x.d)&&typeof x.t==="number"&&!seen[x.id+"|"+x.t]){S.hist.push({id:x.id,sc:x.sc,n:x.n,d:x.d,t:x.t});seen[x.id+"|"+x.t]=1;add++}});
    S.hist.sort(function(a,b){return a.t-b.t});S.hist=S.hist.slice(-600);
    Object.keys(d.lessons||{}).forEach(function(k){if(dstr(d.lessons[k])&&(!S.lessons[k]||d.lessons[k]<S.lessons[k]))S.lessons[k]=d.lessons[k]});
+   Object.keys(d.games||{}).forEach(function(k){var g=d.games[k];if(!g||!GAMES.some(function(x){return x.k===k})||!num(g.best)||!num(g.plays))return;var c=S.games[k];if(!c){S.games[k]={plays:g.plays,best:g.best,bestLabel:typeof g.bestLabel==="string"?g.bestLabel.slice(0,30):String(g.best),last:dstr(g.last)?g.last:today()};add++}else{if(g.best>c.best){c.best=g.best;c.bestLabel=typeof g.bestLabel==="string"?g.bestLabel.slice(0,30):String(g.best);add++}if(g.plays>c.plays)c.plays=g.plays}});
    (d.days||[]).forEach(function(x){if(dstr(x)&&S.days.indexOf(x)<0)S.days.push(x)});S.days.sort();S.days=S.days.slice(-400);
    Object.keys(d.plan||{}).forEach(function(k){if(d.plan[k]===true)S.plan[k]=true});
    save();render();$("#msg").textContent="✅ Sauvegarde rechargée : "+add+" élément(s) retrouvé(s). Rien n'a été effacé.";

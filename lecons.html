@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Les leçons – Le Défi du Temps</title>
-<link rel="stylesheet" href="css/style.css?v=20261124a">
+<link rel="stylesheet" href="css/style.css?v=20261125a">
 </head>
 <body>
 <div class="wrap">
@@ -15,15 +15,15 @@
  <h1>📖 Les leçons</h1>
  <p>Chaque leçon t'explique tout avec des astuces, des sons, des animations et des exercices <b>sans note</b> pour t'entraîner. Quand tu te sens prêt, passe à l'évaluation du thème !</p>
  <div class="grid" id="list"></div>
- <div class="tip"><b class="t">Ordre conseillé :</b> jours → mois → jours de l'année → chiffres romains → English (alphabet, phrases, nombres et couleurs) → maths (tables de multiplication). Une leçon par séance de 10 à 15 minutes, c'est parfait.</div>
+ <div class="tip"><b class="t">Idée :</b> choisis une matière et fais une seule leçon à la fois. Une leçon par séance de 10 à 15 minutes, c'est parfait.</div>
  <p><a class="btn big" href="evaluations.html">📝 Passer aux évaluations</a></p>
 </main>
 <footer>Le Défi du Temps · soutien scolaire CE2</footer>
 </div>
-<script src="js/common.js?v=20261124a"></script>
+<script src="js/common.js?v=20261125a"></script>
 <script>
 shell("lecons","Lis la leçon, écoute les mots, entraîne-toi !");
-$("#list").innerHTML=TOPICS.map((o,i)=>`<a class="card" style="text-decoration:none;border-top:12px solid ${o.col}" href="${o.lesson}"><div style="font-size:2.4rem">${o.e}</div><h3>${i+1}. ${o.t}</h3><p class="hint">${o.sub}</p><span class="btn blue">Ouvrir la leçon →</span></a>`).join("");
+$("#list").outerHTML=`<p class="chips">${SUBJECTS.map(m=>`<a class="chip" style="background:${m.col}" href="#m-${m.k}">${m.e} ${m.t}</a>`).join("")}</p>`+SUBJECTS.map(m=>`<div class="subj" id="m-${m.k}" style="border-color:${m.col}"><h2 style="color:${m.col}">${m.e} ${m.t}</h2><p class="hint">${m.sub}</p><div class="grid">`+TOPICS.filter(o=>o.s===m.k).map(o=>`<a class="card" style="text-decoration:none;border-top:12px solid ${o.col}" href="${o.lesson}"><div style="font-size:2.4rem">${o.e}</div><h3>${o.t}</h3><p class="hint">${o.sub}</p><span class="btn blue">Ouvrir la leçon →</span></a>`).join("")+`</div></div>`).join("");
 </script>
 </body>
 </html>
