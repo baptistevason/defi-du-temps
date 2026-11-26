@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Les jeux – Le Défi du Temps</title>
-<link rel="stylesheet" href="css/style.css?v=20261125b">
+<link rel="stylesheet" href="css/style.css?v=20261126a">
 </head>
 <body>
 <div class="wrap">
@@ -19,7 +19,7 @@
 </main>
 <footer>Le Défi du Temps · soutien scolaire CE2</footer>
 </div>
-<script src="js/common.js?v=20261125b"></script>
+<script src="js/common.js?v=20261126a"></script>
 <script>
 shell("jeux","Quel jeu veux-tu essayer ?");
 $("#list").innerHTML=GAMES.map(g=>{const x=(S.games||{})[g.k];return `<a class="card" style="text-decoration:none;border-top:12px solid #0F766E" href="${g.page}"><div style="font-size:2.6rem">${g.e}</div><h3>${g.t}</h3><p class="hint">${g.sub}</p><p><span class="pill ${x?"mid":"none"}">${x?x.plays+" partie"+(x.plays>1?"s":"")+" · record "+esc(x.bestLabel||String(x.best)):"Pas encore joué"}</span></p><span class="btn green">Jouer →</span></a>`}).join("");

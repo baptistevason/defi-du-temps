@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Mon carnet de champion – Le Défi du Temps</title>
-<link rel="stylesheet" href="css/style.css?v=20261125b">
+<link rel="stylesheet" href="css/style.css?v=20261126a">
 </head>
 <body>
 <div class="wrap">
@@ -40,11 +40,11 @@
 </main>
 <footer>Le Défi du Temps · soutien scolaire CE2</footer>
 </div>
-<script src="js/common.js?v=20261125b"></script>
-<script src="js/evals-data.js?v=20261125b"></script>
+<script src="js/common.js?v=20261126a"></script>
+<script src="js/evals-data.js?v=20261126a"></script>
 <script>
 shell("carnet","Regarde tout ce que tu as accompli !");
-var KEYS=["jours","mois","annee","romains","alphabet","phrases","nombres","tables","final"];
+var KEYS=["jours","mois","annee","romains","alphabet","phrases","nombres","tables","final","tablesUne"];
 function frDate(s){var p=s.split("-");return p[2]+"/"+p[1]+"/"+p[0]}
 function testTitle(id){for(var i=0;i<KEYS.length;i++){var t=EVALS[KEYS[i]].tests.filter(function(x){return x.id===id})[0];if(t)return EVALS[KEYS[i]].e+" "+t.title}return id}
 function render(){

@@ -156,5 +156,6 @@ const BADGES=[
 ["chef","📋","Super consigne","Réussir le niveau 3 du chef a dit",()=>((S.games||{}).consignes||{best:0}).best>=3],
 ["chas","🔍","Œil de lynx","Réussir le niveau 3 de la grande chasse",()=>((S.games||{}).chasse||{best:0}).best>=3],
 ["nbs","🧮","Nombres secrets","Retenir 6 chiffres d'affilée",()=>((S.games||{}).nombres||{best:0}).best>=6],
+["roit","👑","Roi des tables","Réussir (90 %) les 8 évaluations « une table à la fois » de niveau 1",()=>lv1("tablesUne").every(x=>okTest(x.id))],
 ["joueur","🎮","Joueur complet","Essayer les 5 jeux d'attention",()=>GAMES.every(g=>((S.games||{})[g.k]||{plays:0}).plays>0)]];
 function earned(){const o={};BADGES.forEach(b=>{try{if(b[4]())o[b[0]]=1}catch(e){}});return o}

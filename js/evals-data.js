@@ -168,3 +168,10 @@ const EVALS={
   {id:"final-english",s:"anglais",title:"Contrôle final English (tout mélangé)",desc:"15 questions : alphabet, phrases, nombres, couleurs",mk:()=>[...alphaQuiz(3),...alphaEcoute(2),...phQuiz(3),...phEcoute(2),...phDialogue(2),...numQuiz(2),...colQuiz(1)]},
   {id:"final-maths",s:"maths",title:"Contrôle final Maths (tout mélangé)",desc:"15 questions : les tables de multiplication",mk:()=>[...mulType([2,3,4,5],4),...mulType([6,7,8,9],4),...mulChoix([2,3,4,5,6,7,8,9],3),...mulTrous([2,3,4,5,6,7,8,9],2),...problemes(2)]}]}
 };
+
+/* Une évaluation par table : niveau 1 (à ton rythme) et niveau 2 (10 s par réponse) */
+EVALS.tablesUne={s:"maths",title:"Une table à la fois",e:"🎯",col:"var(--tables)",lesson:"lecon-tables.html",tests:(function(){
+ const L=[];
+ for(let n=2;n<=9;n++)L.push({id:"table-"+n,title:"La table de "+n,desc:"10 questions : calculs, choix et trous",mk:()=>[...mulType([n],6),...mulChoix([n],2),...mulTrous([n],2)]});
+ for(let n=2;n<=9;n++)L.push({id:"table-"+n+"-n2",lvl:2,timer:10,title:"Niveau 2 · La table de "+n,desc:"9 questions, 10 secondes par réponse",mk:()=>[...mulType([n],6),...mulTrous([n],3)]});
+ return L})()};
